@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="script.makewar" basedir=".">
+	<war excludes="WEB-INF/web.xml" destfile="build/script.war"  webxml="WebContent/WEB-INF/web.xml" basedir="WebContent/" />
+</project>

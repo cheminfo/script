@@ -1,0 +1,197 @@
+<html>
+<head>
+
+<style type="text/css">
+.cheminfoModule {position: relative; border:1px solid gray;}
+.cheminfoModule .menu {border:1px solid red; height: 20px}
+.cheminfoModule .menu .label {float: left; border:1px solid blue;}
+.cheminfoModule .menu .source {float: left; border:1px solid black;}
+.cheminfoModule .menu .prefs {float: left; border:1px solid green;}
+.cheminfoModule .menu .delete {float: left; border:1px solid orange;}
+.cheminfoModule .content {border:1px solid yellow; position: absolute; top: 20px; left: 0; right: 0; bottom: 0; }
+</style>
+
+<script language='javascript' src='/servletScript/javascript/jquery/jquery.min.js'></script>
+<script>
+jQuery.noConflict();
+</script>
+
+</head>
+<body>
+
+<script>
+var results={};
+results.aString="The content of the string";
+results.aNumber=1234.000;
+results.aBoolean=false;
+results.anArray=[1,2,3,4,5];
+results.aSecondArray=["ab","cd","ef","gh"];
+results.distanceMatrix=[[1,2,3],[4,5,6],[7,8,9]];
+results.anObject={type:"jcamp",url:"xxx.jdx"};
+results.rowDescription=[{experimental:{type:"jcamp",url:"exp1.jdx"},theoretical:{type:"jcamp",url:"theo1"},desc:"First row"},{experimental:{type:"jcamp",url:"exp2.jdx"},theoretical:{type:"jcamp",url:"theo2"},desc:"Second row row"}];
+results.columnDescription=["First","Second","Third"];
+
+function set(field,value) {
+	// very show method ... but could work to fire events
+	results[field]=value;
+	CI.changeResult(field);
+}
+
+var CI={};
+CI.modules={};
+CI.counter=0;
+CI.updateSource=function(id, source, value) {
+	CI.modules[id].updateSource(source, value);
+	CI.modules[id].update();
+}
+
+CI.changeResult=function(field) {
+	for (var key in CI.modules) {
+		for (var key2 in CI.modules[key].sources) {
+			if (CI.modules[key].sources[key2].value && CI.modules[key].sources[key2].value==field) {
+				CI.modules[key].update();
+			}
+		}
+	}
+}
+
+CI.Module=function(results, options) {
+	CI.counter++;
+	CI.modules[CI.counter]=this;
+	this.id=CI.counter;
+	this.results=results;
+	this.options=options;
+	// we may need many sources, for example for a distance matrix we could have xLabel, yLabel and the data
+	// each source will have a label as well as flavors
+	this.sources={data: {flavors: ["string"]}};
+	this.prefs={height:200, width:400, label: "Module"};
+	this.jpathListener=[];
+	this.moduleDiv;
+	this.contentDiv;
+	this.menuDiv;
+	
+	this.onChange=function (changedJpath) {
+	}
+	
+	this.updateSource=function (source, value) {
+		console.log(this.sources);
+		console.log(source);
+		console.log(this.sources[source])
+		this.sources[source].value=value;
+	}
+	
+	this.create=function () {
+		this.moduleDiv=jQuery("<DIV></DIV>");
+		this.moduleDiv.addClass("cheminfoModule");
+		this.menuDiv=jQuery("<DIV class='menu'></DIV>");
+		this.menuDiv.append("<DIV class='label'>Label</DIV>");
+		this.menuDiv.append("<DIV class='source'>Source</DIV>");
+		this.menuDiv.append("<DIV class='prefs'>Prefs</DIV>");
+		this.menuDiv.append("<DIV class='delete'>Delete</DIV>");
+		this.moduleDiv.append(this.menuDiv);
+		this.contentDiv=jQuery("<DIV class='content'></DIV>");
+		this.moduleDiv.append(this.contentDiv)
+		this.moduleDiv.height(this.prefs.height);
+		this.moduleDiv.width(this.prefs.width);
+		jQuery('body').append(this.moduleDiv);
+		this.updateMenu();
+		if (this.update) this.update();
+	}
+	
+	this.updateMenu=function() {
+		// we setup the label
+		this.menuDiv.find(".label").html(this.prefs.label);
+		this.menuDiv.find(".source").html(this.getSourceSelector());
+	}
+	
+	// We may have many source selector ...
+	this.getSourceSelector=function() {
+		var selector="";
+		for (var key1 in this.sources) {
+			console.log(key1);
+			selector+=key1;
+			selector+="<select onchange='CI.updateSource("+this.id+",\""+key1+"\",this.value);'>";
+			selector+="<option value=''></option>";
+			for (var key in this.results) {
+				if (jQuery.inArray(CI.Util.getValueType(this.results[key]), this.sources[key1].flavors)>-1) {
+					selector+="<option value='"+key+"'>"+key+"</option>";
+				}
+			}
+			selector+="</select>";
+		}
+		return selector;
+		
+	}
+	
+
+}
+
+CI.ModuleValue=function(results) {
+	CI.Module.call(this,results);
+	this.prefs.height=100;
+	this.prefs.label="Value module";
+	this.sources={data: {flavors: ["string","number"]}};
+	this.create();
+}
+CI.ModuleValue.prototype=new CI.Module();
+CI.ModuleValue.prototype.update=function() {
+	if (this.sources["data"].value) {
+		this.contentDiv.html(this.results[this.sources["data"].value]);
+	} else {
+		this.contentDiv.html("");
+	}
+}
+
+CI.ModuleTable=function(results) {
+	CI.Module.call(this,results);
+	this.prefs.height=200;
+	this.prefs.width=1000;
+	this.prefs.label="Table module";
+	this.sources={rowInfo: {flavors: ["array"]}, colInfo: {flavors: ["array"]}, data: {flavors: ["matrix"]}};
+	this.create();
+}
+CI.ModuleTable.prototype=new CI.Module();
+CI.ModuleTable.prototype.update=function() {
+	this.contentDiv.html(this.results[this.source]);
+}
+
+
+CI.Util={};
+CI.Util.getValue=function(value) {
+	if (value.value) return value.value;
+	return value;
+}
+CI.Util.getValueType=function(value) {
+	var type=typeof value;
+	if (type=="object") {
+		if (jQuery.isArray(value)) {
+			if (value.length==0) return "array";
+			if (jQuery.isArray(value[0])) {
+				return "matrix";
+			}
+			return "array";
+		} else {
+			if (value["type"]) return value["type"];
+		}
+	}
+	return type;
+}
+CI.Util.getValueOptions=function(value) {
+	if (value.options) return value.options;
+	return {};
+}
+
+</script>
+
+<script>
+var firstModule=new CI.ModuleValue(results);
+var secondModule=new CI.ModuleValue(results);
+</script>
+<br>
+<script>
+var thirdModule=new CI.ModuleTable(results);
+</script>
+
+<button onclick="set('aString','NEW STRING')">Change aString</button>
+
+</body></html>

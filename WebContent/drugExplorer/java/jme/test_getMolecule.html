@@ -1,0 +1,99 @@
+<html>
+<head>
+
+<title>JME Molecular Editor</title>
+<script language="JavaScript">
+
+// the format in which you want the molecule, mol, jme or smiles
+
+<!--#if expr="$QUERY_STRING = /.*format=([^&]*).*/" -->
+<!--#set var="format" value="$1" -->
+var format="<!--#echo var='format' -->";
+<!--#else -->
+var format="mol";
+<!--#endif -->
+
+// the format in which you want the molecule, mol, jme or smiles
+<!--#if expr="$QUERY_STRING = /.*fieldName=([^&]*).*/" -->
+        <!--#set var="fieldName" value="$1" -->
+var fieldName=opener.document.<!--#echo var='fieldName' -->;
+<!--#else -->
+var fieldName="";
+<!--#endif -->
+
+
+// options for the applet
+<!--#if expr="$QUERY_STRING = /.*options=([^&]*).*/" --><!--#set var="options" value="$1" --><!--#else --><!--#set var="options" value="" --><!--#endif -->
+
+
+function submit() {
+  var smiles = document.JME.smiles();
+  var jme = document.JME.jmeFile();
+  var mol = document.JME.molFile();
+
+  if (smiles == "") {
+    alert("Nothing to submit");
+  }
+  else {
+        if (format=="jme") {
+                fieldName.value=jme;
+        } else if (format=="smiles") {
+                fieldName.value=smiles;
+        } else {
+                if (fieldName.tagName == 'TEXTAREA' ) {
+                fieldName.innerHTML=mol;
+                } else {
+                        fieldName.value=mol;
+                }
+        }
+// the callBack function that can be executed at the end
+<!--#if expr="$QUERY_STRING = /.*callBack=([^&]*).*/" -->
+        <!--#set var="callBack" value="$1" -->
+        opener.<!--#echo var='callBack' -->;
+<!--#endif -->
+// adding a delay allows to update the molecule before closing the window, otherwise nothing is done ...
+        window.close();
+  }
+}
+
+
+function openHelpWindow() {
+  window.open("jme_help_window.html","","toolbar=no,menubar=no,scroolbars=no,resizable=yes,width=500,height=600")
+}
+
+function init() {
+
+        // if there is a format and a fieldName we can try to load the molecule in the applet
+        var value=fieldName.value;
+        if ((value!=null) && (value.length>0)) {
+                if (format=="jme") {
+                        document.JME.readMolecule(value);
+                } else if (format=="smiles") {
+                        // TODO
+                } else {
+                        document.JME.readMolFile(value);
+                }
+        }
+}
+
+
+</SCRIPT>
+</head>
+
+<body onload="init();">
+<center>
+<!-- applet resizing works with IE, doesn't work with NS-->
+<applet code="JME.class" name="JME" archive="JME.jar" width="90%" height="85%">
+<param name="options" value="<!--#echo var='options' -->">
+You have to enable Java and JavaScritpt on your machine !
+</applet>
+
+<input type="button" value="Submit Molecule" onclick="submit();">
+&nbsp;&nbsp;
+<input type="button" value="Close" onclick="window.close()">
+&nbsp;&nbsp;
+<input type="button" value="Help" onklick "openHelpWindow()">
+</center>
+</body>
+</html>
+

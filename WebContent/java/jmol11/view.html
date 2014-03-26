@@ -1,0 +1,63 @@
+¨<html>
+<head>
+<script language="javascript" src="jmol.js"></script>
+
+<script language="javascript">
+	var jmolWindow=opener.jmolWindow;
+	var title=unescape(jmolWindow.title);
+	document.write("<title>"+title+"</title>");
+</script>
+
+<link rel="stylesheet" type="text/css" href="/lims/styles.css">
+</head>
+
+
+<body bgcolor="">
+
+
+<applet codebase="."  id="Jmol" code="JmolApplet" archive="JmolApplet.jar" width="700" height="700">
+<param name="bgcolor" value="#FFFFFF">
+<param name="style" value="wireframe"><param name="label" value="symbol">
+<param name="wireframeRotation" value="true"><param name="perspectiveDepth" value="false">
+<param name="progressbar" value="true">
+<param name="progresscolor" value="blue">
+You have to enable Java and JavaScritpt on your machine !
+</applet>
+
+
+
+<script language="javascript">
+	var jmol=new Jmol(document.getElementById("Jmol"));
+	
+	var counter=0;
+	function waituntilok() {
+		active=false;
+		try {
+			active=jmol.applet.isActive();		
+		} catch (e) {
+		}
+		try {
+			if (active) {
+				if ((jmol.applet.getAppletInfo()+"").indexOf("Jmol")<0) {
+					active=false;
+				}
+			}
+		} catch (e) {
+			active=false;
+		}
+		
+		if (active) {
+			jmolWindow.onload(jmol);
+		} else {
+			window.setTimeout("waituntilok();",250);
+			counter++;
+		}
+	}
+	waituntilok();
+</script>
+
+
+
+
+</body>
+</html>

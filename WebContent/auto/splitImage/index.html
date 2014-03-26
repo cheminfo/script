@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="../common/fileUploader.js"></script>
+<script src="../common/dragDropFileUploader.js"></script>
+ <script src="../common/runScript.js"></script>
+<LINK rel="stylesheet" href="../common/style.css">
+    
+        <title>HTML5 drag'n'drop file upload with Servlet</title>
+  
+
+    </head>
+    <body>
+    
+    <div class="title">
+    	Picture analysis
+    </div>
+    <div class="help">
+    	You may drag and drop an image and get various information about it.
+    </div>
+	<div id="dropbox" class="CI-fileUploader-dropbox">Drag and drop a JPEG image here...</div>
+	<div id="status"></div>
+        
+        
+        <textarea style="display:none" id="script" cols=60 rows=10></textarea>
+
+		<img src="test.jpg" width="25%" id="demo" />     
+
+        <script>
+	
+        	$("#demo").click(function(from) {
+        		var imageURL=location.href.replace(/\/[^\/]*$/,"")+"/test.jpg";
+        		runScript(imageURL);
+        	})
+        
+			var statusDivID="status";        
+			var baseURL=location.pathname.replace(/(\/[^\/]+\/).*/,"$1")
+			// ATTACH AN UPLOAD PROCESS TO A DIV
+		    var saveTmpJpgURL=baseURL+"//HD/Save/ejXUPdmzRX?filename=test%40patiny.com%2F%2FProcess%2F.tmp%2F%3Ctimestamp%3E%3Crandom%3E.jpg";
+			function uploadDone(result) {
+				$("#"+statusDivID).html("Upload completed");
+				runScript(result.result.loadURL);
+			}
+			new CI.script.dragDropFileUploader("dropbox", statusDivID, saveTmpJpgURL, uploadDone);
+	
+			// RUNNING THE SCRIPT
+		    var runScriptURL=baseURL+"/HD/Run/hCsYMTSSVJ?filename=test%40patiny.com%2F%2FProcess%2F.tmp%2Fresult%3Ctimestamp%3E%3Crandom%3E%2F";
+			function runScript(fileURL) {
+				$("#"+statusDivID).html("Start script");
+				var script="var fileURL='"+fileURL+"';\r\n";
+				script+=$("#script").val();
+				CI.script.run(runScriptURL, script, runScriptDone);
+			}
+			function runScriptDone(result) {
+				$("#"+statusDivID).html("Execution done");
+				console.log(result);
+				// we will open a visualizer
+				openVisualizer(result);
+			}
+	
+			// OPEN THE VISUALIZER
+			var visualizerURL="http://www.cheminfo.org/visualizer/release/20130605/index.html";
+			var viewURL=location.href.replace(/\/[^\/]*$/,"")+"/view.json";
+			function openVisualizer(result) {
+				var dataURL=escape(result._dataUrl);
+				var url=visualizerURL+"?dataURL="+dataURL+"&viewURL="+escape(viewURL);
+				
+				console.log(url);
+				
+				location.href=url;
+				
+				// window.open(url);
+			}
+			
+	
+			
+			$.ajax({
+				url:"script.js",
+				dataType:"text",
+				success: function(result) {
+					$("#script").val(result);
+				},
+				error: function(result) {
+					console.log(result);
+				}
+			});
+			
+		
+        </script>
+        
+        
+        
+    </body>
+</html>

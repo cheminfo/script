@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <title>HTML + JSON Report demo</title>
+    <script type="text/javascript" src="jsonreport.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+    
+    <style type="text/css">
+        BODY {
+            font: 14px Verdana, Arial;
+            color: #444;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+        }
+        H1 {
+          margin:0;
+          font: 24px Helvetica, Verdana, Arial;
+          padding: 20px 0 10px 0;
+          background: #FBFBFB;
+          border-bottom: solid 1px #fff;
+        }
+        A {
+          color: #093;
+          text-decoration: none;
+        }
+        A:hover {
+          text-decoration: underline;
+        }
+        #usage {
+            border-top: solid 1px #dfdfdf;
+            border-bottom: solid 1px #dfdfdf;
+            margin: 0 0 10px 0;
+            padding: 5px;
+            background: #f1f1f1;
+            line-height: 20px;
+            text-align: center;
+        }
+        TEXTAREA {
+            width: 990px;
+            height: 100px;
+        }
+        BUTTON {
+            margin: 20px;
+            padding: 4px 8px;
+        }
+        #use {
+            clear: both;
+            border: 1px solid #ccc;
+            margin: auto;
+            width: 960px;
+        }
+        #use H4 {
+            margin: 0;
+            padding: 5px;
+            background: #ccc;
+            color: #fff;
+            text-shadow: 1px 1px 1px #444;
+            font-size: 18px;
+            font-weight: normal;
+        }
+        PRE {
+            background: #f1f1f1;
+            padding: 4px 8px;
+            color:#000;
+            text-shadow: 0 1px 0 #fff;
+        }
+        .jsonreport {
+            text-align:left;
+            background: #fff;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <div id="jsonreport" class="jsonreport"></div>
+
+<script>
+function getURLParameter(name) {
+    return unescape(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
+var urlInit=getURLParameter("url");
+if (urlInit && urlInit!=null && urlInit!="null") {
+	console.log(urlInit);
+	$.get(urlInit,
+		{},      
+		function(data) {
+			document.getElementById('jsonreport').innerHTML=_.jsonreport(data);
+		},
+		"text"
+	);
+} else {
+        document.getElementById('jsonreport').innerHTML=_.jsonreport(opener.document.getElementById('result').value );
+}
+</script>
+    
+	<p>
+		<a href="https://github.com/AjaxStack/AjaxStack/blob/master/src/jsonreport/jsonreport.js">jsonreport.js</a>
+	</p>
+</body>
+</html>

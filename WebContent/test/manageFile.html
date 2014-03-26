@@ -1,0 +1,196 @@
+<html>
+<head>
+
+<style>
+ins {
+	background:#E6FFE6;
+}
+
+del {
+	background:#FFE6E6;
+}
+
+
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+	jQuery.noConflict();
+	var baseURL="/script/Run"
+</script>
+
+</head>
+<body>
+
+<a href="/script/Login/4xtzTvias1/playground@patiny.com?redirect=/script/test/manageFile.html">LOGIN</a><p>
+
+Content field (may be saved):<br>
+<textarea id="content" cols=100 rows=10>
+</textarea>
+<br>
+Full relative name: <input id="name">
+
+<button onClick="getDir(jQuery('#name').val())">Get dir</button>
+<button onClick="save(jQuery('#content').val(),jQuery('#name').val())">Save content</button>
+<button onClick="createFolder(jQuery('#name').val())">Create folder</button>
+<button onClick="deleteFolder(jQuery('#name').val())">Delete folder</button>
+<button onClick="deleteFile(jQuery('#name').val())">Delete file</button>
+<button onClick="load(jQuery('#name').val())">Load file</button><br>
+
+Second name: <input id="newName">
+<button onClick="rename(jQuery('#name').val(),jQuery('#newName').val())">Rename</button>
+<button onClick="diff(jQuery('#name').val(),jQuery('#newName').val())">DIFF</button>
+<button onClick="colorDiff(jQuery('#name').val(),jQuery('#newName').val())">Color DIFF</button>
+<br>
+Result field:<br>
+<div id="result">
+</div>
+<br>
+
+Should use: <a href="http://code.google.com/p/dynatree/">http://code.google.com/p/dynatree/</a>
+
+
+<script>
+	function getFullList(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"fullList",
+					"name":name
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+
+	function getDir(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"dir",
+					"name":name
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	
+	function createFolder(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"createFolder",
+					"name":name
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function deleteFolder(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"deleteFolder",
+					"name":name
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function deleteFile(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"delete",
+					"name":name
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function save(content,name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"save",
+					"name":name,
+					"content":content
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function rename(name,newName) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"rename",
+					"name":name,
+					"newName":newName
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function diff(name,secondName) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"diff",
+					"name":name,
+					"secondName":secondName
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#content").val(data.result);
+					jQuery("#result").html(JSON.stringify(data));
+		});
+	}
+	
+	function colorDiff(name,secondName) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"FileManager",
+					"event":"colorDiff",
+					"name":name,
+					"secondName":secondName
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#content").val(data.result);
+					jQuery("#result").html(data.result.replace(/\r/g,"<br>"));
+		});
+	}
+	
+	function load(name) {
+		jQuery.getJSON(baseURL,
+			{
+				"action":"FileManager",
+				"event":"load",
+				"name":name
+			},
+			function(data) {
+				jQuery("#content").val(data.result);
+				jQuery("#result").html(JSON.stringify(data));
+			},
+			"text"
+		);
+	}
+	
+</script>
+
+
+</body></html>

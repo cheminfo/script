@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="/servletScript/javascript/prototype/prototype.js"></script>
+<title>Chemcalc</title>
+<link href="http://www.chemcalc.org/themes/chemcalc/style.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+	<style>
+	body, tbody {
+		font-family: helvetica, arial, sans-serif;
+		background-color:#E0EcF5;
+	}
+	.small {
+		font-size: 9pt;
+	}
+	th {
+		text-align: left;
+	}
+	td {
+		vertical-align: top;
+	}
+	li, ul, ol {
+		margin-left:5px; padding-left: 5px;
+	}
+</style>
+
+
+
+
+
+
+<table>
+<tr><th>Interactive JSON</th><th>JPath value</th></tr>
+<tr>
+
+<td class="small">
+<div id="jsontree" style="overflow:auto; height:200px;width:250px;"></div>
+</td>
+<td>
+JPath: <input type="text" id="jpath" /><br>
+Value: <textarea cols=20 rows=10 id="value" class="small"></textarea>
+</td>
+</tr>
+</table>
+
+
+
+<script>
+function renderJSON(obj,oldjpath) {
+var keys = []
+var retValue = new Element('ul');
+var jpath="";
+for (var key in obj) {
+	if (key.match(/^[0-9]+/)) {
+		var jpath=oldjpath+"["+key+"]";
+	} else {
+		if (oldjpath!="") {
+			var jpath=oldjpath+"."+key;
+		} else {
+			var jpath=oldjpath+key;
+		}
+	}
+        if(typeof obj[key] == 'object') {
+		var liElement = new Element('li');
+		liElement.insert(key);
+		liElement.appendChild(renderJSON(obj[key],jpath));
+		retValue.appendChild(liElement);
+        } else {
+		if (typeof obj[key] != 'function') {
+			var liElement = new Element('li');
+			if (typeof obj[key] == 'string') {
+				if (obj[key].length>30) {
+					liElement.insert(key+" = "+obj[key].substring(0,30)+" ...");
+				} else {
+					liElement.insert(key+" = "+obj[key]);
+				}
+			} else {
+				liElement.insert(key+" = "+obj[key]);
+			}
+			liElement.writeAttribute("jpath",jpath);
+			retValue.appendChild(liElement);
+		}
+        }
+   keys.push(key)
+}
+return retValue;
+}
+
+
+</script>
+
+<script language="javascript">
+function addEvent() {
+	$$('#jsontree li').each(function(anchor) {  
+		anchor.observe('click', function(e) { 
+			e.stop();
+			var el = e.element();
+			var next = el.down('ul');
+			if (next) {
+				next.toggle();
+			}
+			el.toggleClassName('active');
+		});
+		anchor.observe('mouseover', function(e) { 
+			e.stop();
+			var jpath=e.element().readAttribute("jpath");
+			$('jpath').value=jpath;
+			try {
+				$('value').value=eval("result."+jpath);
+			} catch (e) {}
+		});
+	});  
+}
+
+
+var result=eval('('+opener.document.getElementById("result").value+')');
+$("value").innerHTML=opener.document.getElementById("result").value;
+$('jsontree').innerHTML="<ul>"+renderJSON(result,"").innerHTML+"</ul>";
+addEvent();
+</script>
+
+Need to add the following resources:
+<ul>
+<li>http://joncom.be/code/javascript-json-formatter/
+<li>http://quickjsonformatter.codeplex.com/releases/view/10136
+<li>
+
+</ul>
+
+</body>
+</html>

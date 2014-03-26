@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+
+  <display-name>script</display-name>
+ 
+  <session-config>
+        <session-timeout>600</session-timeout>
+  </session-config>
+    
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Run</display-name>
+    <servlet-name>Run</servlet-name>
+    <servlet-class>org.cheminfo.script.Run</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Run</servlet-name>
+    <url-pattern>/Run</url-pattern>
+  </servlet-mapping>
+ 
+   <servlet>
+    <description></description>
+    <display-name>Service</display-name>
+    <servlet-name>Service</servlet-name>
+    <servlet-class>org.cheminfo.script.Service</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Service</servlet-name>
+    <url-pattern>/Service/*</url-pattern>
+  </servlet-mapping>
+ 
+ 
+  <servlet>
+    <description></description>
+    <display-name>GetResultServlet</display-name>
+    <servlet-name>GetResultServlet</servlet-name>
+    <servlet-class>org.cheminfo.script.GetResultServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetResultServlet</servlet-name>
+    <url-pattern>/GetResultServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Tiny</display-name>
+    <servlet-name>Tiny</servlet-name>
+    <servlet-class>org.cheminfo.script.Tiny</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Tiny</servlet-name>
+    <url-pattern>/Tiny/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Login</display-name>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>org.cheminfo.script.Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login/*</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <description></description>
+    <display-name>HD</display-name>
+    <servlet-name>HD</servlet-name>
+    <servlet-class>org.cheminfo.script.HD</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HD</servlet-name>
+    <url-pattern>/HD/*</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <description></description>
+    <display-name>Revision</display-name>
+    <servlet-name>Revision</servlet-name>
+    <servlet-class>org.cheminfo.script.Revision</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Revision</servlet-name>
+    <url-pattern>/Revision/*</url-pattern>
+  </servlet-mapping>
+   
+  <context-param>
+    <param-name>PROPERTY_FILENAME</param-name>
+    <param-value>/usr/local/script/script.properties</param-value>
+  </context-param>
+  <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/font-woff</mime-type>
+  </mime-mapping>
+</web-app>

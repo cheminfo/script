@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <title>HTML + JSON Report demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+    
+    <style type="text/css">
+		pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+		.string { color: green; }
+		.number { color: darkorange; }
+		.boolean { color: blue; }
+		.null { color: magenta; }
+		.key { color: red; }
+    </style>
+</head>
+<body>
+    <pre id="jsonreport"></pre>
+<script>
+function syntaxHighlight(json) {
+	var json = JSON.stringify(JSON.parse(json),null,2);  
+	
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+
+
+function getURLParameter(name) {
+    return unescape(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
+var urlInit=getURLParameter("url");
+if (urlInit && urlInit!=null && urlInit!="null") {
+	$.get(urlInit,
+		{},      
+		function(data) {
+			document.getElementById('jsonreport').innerHTML=syntaxHighlight(data);
+		},
+		"text"
+	);
+} else {
+        document.getElementById('jsonreport').innerHTML=syntaxHighlight(opener.document.getElementById('result').value );
+}
+
+
+
+</script>
+    
+
+
+</body>
+</html>

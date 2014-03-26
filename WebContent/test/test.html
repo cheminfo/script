@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<style type="text/css">
+.cheminfoModule {position: relative; border:1px solid gray;}
+.cheminfoModule .menu {border:1px solid red; height: 20px}
+.cheminfoModule .menu .label {float: left; border:1px solid blue;}
+.cheminfoModule .menu .source {float: left; border:1px solid black;}
+.cheminfoModule .menu .prefs {float: left; border:1px solid green;}
+.cheminfoModule .menu .delete {float: left; border:1px solid orange;}
+.cheminfoModule .content {border:1px solid yellow; position: absolute; top: 20px; left: 0; right: 0; bottom: 0; }
+</style>
+
+<script language='javascript' src='/script/javascript/jquery/jquery.min.js'></script>
+<script>
+jQuery.noConflict();
+</script>
+
+</head>
+<body>
+
+<script>
+function Mammal(name){
+	this.abc="123";
+	this.name=name;
+} 
+Mammal.prototype.haveABaby=function(){ 
+	var newBaby=new Mammal("Baby "+this.name);
+	this.offspring.push(newBaby);
+	return newBaby;
+} 
+Mammal.prototype.toString=function(){ 
+	return '[Mammal "'+this.name+'"]';
+} 
+
+function Cat(name){
+	Mammal.call(this,name);
+} 
+Cat.prototype = new Mammal();        // Here's where the inheritance occurs 
+
+
+Cat.prototype.toString=function(){ 
+	return '[Cat "'+this.name+'"]';
+} 
+
+
+var myPet = new Cat("felix");
+var secondPet = new Cat("artistot");
+console.log(myPet);
+console.log('myPet is '+myPet);             // results in 'myPet is [Cat "Felix"]' 
+console.log('myPet is '+secondPet);             // results in 'myPet is [Cat "Felix"]' 
+
+
+</script>
+</body></html>

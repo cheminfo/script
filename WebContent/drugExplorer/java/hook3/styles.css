@@ -1,0 +1,41 @@
+
+p, body, tbody {
+	    font-family: Helvetica, Geneva, Arial, SunSans-Regular, sans-serif;
+	    font-size: 12px;
+	    padding: 5px;
+}
+
+td {background-color: white}	
+table {border-spacing: 0px 0px}
+
+input[type=submit], button {
+	font-size: 12px; 
+	margin:6px 6px 2px 2px;
+	border: 1px outset black;
+	background-color:#eee;
+    border:1px solid #e5e5e5;
+    border-top:1px solid #ddd;
+    border-left:1px solid #ddd;
+    padding:3px 3px 3px 3px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+input[type=submit]:hover, button:hover {
+	background-color:#ddd;
+    border:1px solid #bbbbbb;
+}
+
+
+/* Used by prototype TABS */
+ul.tabs {list-style:none;margin:0 0 5px 0;padding:0;clear:both;border-bottom:1px solid #ccc;height:20px;clear:both}
+ul.tabs li.tab{float:left;margin-right:7px;text-align:center}
+ul.tabs li.tab a{display:block;height:20px;padding:0 6px 0 6px;background-color:#fff;color:#333;width:80px}
+ul.tabs li.tab a:hover{color:#333}
+ul.tabs li.tab a.active{background-color:#ccc}
+ul.tabs li.source_code{float:right}
+
+a, a:link, a:active, a:visited {color: #385EA3; text-decoration:none; font-weight: bold;}
+a:hover {text-decoration:underline;}
+	
+	

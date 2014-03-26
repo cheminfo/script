@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="../javascript/includes/table_cmp.js"></script>
+<script type="text/javascript" src="../javascript/includes/jquery.js"></script>
+<script type="text/javascript" src="../javascript/includes/follow.js"></script>
+<script type="text/javascript" src="../javascript/prototype/prototype.js"></script>
+<!-- Nemo tools -->
+<script language="javascript" type="text/javascript" src="../java/hook3/nemoTools.js"></script>
+
+<link rel="stylesheet" type="text/css" href="table.css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	var infoRows = new Array();
+	var infoCols = new Array();
+	var events = new Array();
+	var right,left;
+	function init(){
+		
+		followdivName = 'floatdiv';
+		right=$('infoCol1');
+		left=$('infoCol2');
+
+		var output=JSON.parse(opener.document.getElementById('result').value);
+		var result = output['result'];
+		
+		var contrast=opener.document.getElementById("contrast").value;
+		//var tableInfo=eval("(["+result.table[0]+"])");
+		var tableInfo=result['report']['value'];
+		//console.log(tableInfo);
+		var options=result.report.options;
+		//console.log(tableInfo.length+","+tableInfo[0].length);
+		
+		xLabel=options.xLabel;
+		yLabel=options.yLabel;
+		events = options.events;//An array of events
+		for(var i=0;i<events.length;i++)
+			events[i].func=eval(events[i].action);
+		
+		//Add the head.
+		addHeadToTable('mainTableHead',xLabel.value);
+		
+		var columns = tableInfo[0].length
+		
+		for(var i=0;i<tableInfo.length;i++){
+			addRowToTable('mainTableBody', tableInfo[i], yLabel.value[i]);
+		}
+
+	}
+	
+	function getFunctionName(funct){
+		return funct.substr(indexOf(' '),indexOf('('));
+	}
+
+	function addHeadToTable(headTableName,info){
+	  	var header = $(headTableName);
+	  	var oCell = header.childNodes.item(0);
+    	oCell.innerHTML= "Sort";
+	    for (var i=0; i<info.length; i++){
+	    	oCell = header.children.item(i);
+	    	oCell.innerHTML= info[i].label;
+	    }
+	    var limit = header.children.length
+	    for(var i=limit-1;i>info.length-1;i--){
+	    	header.deleteCell(i) ;
+	    	
+	    }
+	}
+	
+	function addRowToTable(tableName,info,label){
+		var columns = info.length;
+	  	var tbl = $(tableName);
+	  	lastRow = tbl.rows.length;
+	  	// if there's no header row in the table, then iteration = lastRow + 1
+	  	var iteration = lastRow+1;
+	 	var oRow = tbl.insertRow(lastRow);
+	 	oRow.setAttribute('bgColor',label.color);
+	 	
+	 	var oCell = oRow.insertCell(-1);
+	      oCell.innerHTML = label.label;
+	  
+	    for (i=0; i<columns; i++){
+		      oCell = oRow.insertCell(-1);
+		      oCell.innerHTML = info[i];
+		      for(var j=0;j<events.length;j++)
+		    	  oCell.setAttribute(events[j].event,'eventCatcher('+j+','+lastRow+','+i+')');
+		}
+	}
+	
+	function eventCatcher(k,row, column){
+		events[k].func(row,column);
+	}
+	/*function showInfo(row,col){
+		var floatInfo = $('floatdiv');
+		$('infoCol1').innerHTML='tic: '+infoRows[row].tic;
+		$('infoCol1').innerHTML+='<br>bpi: '+infoRows[row].bpi+'<br>bpm: '+infoRows[row].bpm;
+		$('infoCol1').innerHTML+='<br>time: '+infoRows[row].time;
+		$('infoCol2').innerHTML='rslt: '+infoCols[col].resolution+'<br>Mass: '+infoCols[col].mass;
+		$('infoCol2').innerHTML+='<br>Weight: '+infoCols[col].weight;
+	}
+	
+	function showSpectra(specA,specB) {
+		var param = {'bgColor': 'green', 'width': 1000, 'height': 800, 'title': 'test'};
+		spectrumURLs=[];
+		spectrumColors=[];
+		spectrumURLs[0]=infoRows[specA].url;
+		spectrumColors[0]="#000000";
+		spectrumURLs[1]=infoCols[specB].url;
+		spectrumColors[1]="#F000B1";
+		
+		var param = {'bgColor': 'green', 'spectrumURLs': spectrumURLs,'spectrumColors':spectrumColors, 'width': 1000, 'height': 800, 'title': 'test'};
+		openNemoWindow(param);
+	}*/
+
+</script>
+</head>
+<body onload="init()">
+	<table>
+		<tr>
+			<td>
+				<table class="example table-autosort:0 boldtable" id="mainTable">
+					<thead>
+					   <tr id='mainTableHead'>
+						<th class="table-sortable:default"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+					   </tr>
+					</thead> 
+					<tbody id="mainTableBody">
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</table>	
+	<div id="floatdiv" style="  
+    	position:absolute;  
+    	width:1px;height:1px;top:0px;right:0px;  
+    	padding:1px;background:#FFFFFF;  
+    	border:2px solid #2266AA;  
+   	 	z-index:100">  
+		<table class="example">
+			<tr><td class='lefthead'>Exp. info</td><td class='righthead'>Calc. Info</td></tr>
+			<tr><td class='leftbody' id='infoCol1'>Column1</td><td class='rightbody' id='infoCol2'>Colum2</td></tr>
+		</table>  
+	</div> 
+</body>
+</html>

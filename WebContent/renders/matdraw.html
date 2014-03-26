@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="../javascript/includes/json_parse.js"></script>
+<script type="text/javascript" src="../javascript/includes/replacer.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function init(){
+		
+        var distance={};
+        var result=JSON.parse(opener.$('#result').val());
+		for (var metaVar in result['result']){
+			if (result['result'][metaVar].type == 'matrix'){
+				distance=result['result'][metaVar].value;
+			}
+		}
+
+		var contrast=opener.document.getElementById("contrast").value;
+
+		var ctx = document.getElementById('a').getContext("2d");
+		var rows=distance.length;
+		var cols = distance[0].length;
+		
+		var sizeX=4;sizeY=4;
+		var i,j;
+		var min=9999999;
+		var max=-9999999;
+		if(contrast=='1'){
+			//find min and max
+			for(i=rows;i--;){
+				for(j=cols;j--;){
+					if(distance[i][j]>max)
+						max=distance[i][j];
+					if(distance[i][j]<min)
+						min=distance[i][j];
+				}
+			}
+			//Rescaling values
+			var delta = max-min;
+			for(i=rows;i--;)
+				for(j=cols;j--;)
+						distance[i][j]=(distance[i][j]-min)/delta;
+
+		}
+		//lng=1;
+		for(i=rows;i--;){
+			for(j=cols;j--;){
+				ctx.fillStyle = numberToHTMLcolor(distance[i][j]);
+				ctx.fillRect(j*sizeY,i*sizeX,sizeY,sizeX);
+			}
+		}
+		//Painting the scale.
+		var sizeYScale = rows*sizeY/255;		
+		for(i=255;i--;){
+			ctx.fillStyle = numberToHTMLcolor((255-i)/255.0);
+			ctx.fillRect(cols*sizeX+10,Math.ceil(i*sizeYScale),10,Math.ceil(sizeYScale));
+		}
+		ctx.fillStyle    = '#000';
+		ctx.font         = 'italic 12px sans-serif';
+		ctx.textBaseline = 'top';
+		ctx.fillText  (max.toFixed(4), cols*sizeX+25, 0);
+		ctx.fillText  (min.toFixed(4), cols*sizeX+25, 255*sizeYScale-15);
+		
+	
+		
+	}
+	/**
+	* Number should be between 0 and 1, where 0 is black an 1 is white. 
+	**/
+	function numberToHTMLcolor(number) {
+		// isolate the colors - really not necessary
+	    var red=0, green=0, blue=0;
+		if(number>=00&&number<1/4)
+			red=Math.floor(number*255*4)-0;
+		else{
+			if(number<2/4){
+				red=255;
+				green=Math.floor((number-2/4)*255*4)-0;
+			}
+			else{
+				if(number<3/4){
+					red=255-Math.floor((number-3/4)*255*4);
+					green=255;
+				}
+				else{
+					red=0;
+					green=255;
+					blue=Math.floor((number-2/3)*255*3)-0;
+				}
+			}
+		}
+		
+	    //console.log(number+" "+red+" "+green+" "+blue);
+	    
+	    var template = "#000000";
+	 
+	    // in the MS Windows world RGB colors
+	    // are 0xBBGGRR because of the way Intel chips store bytes
+	    red = (red&0x0000ff) << 16;
+	    green = (green&0x0000ff)<<8;
+	    blue = (blue&0x0000ff);
+	    
+	   // console.log("*"+number+" "+red+" "+green+" "+blue);
+	    // mask out each color and reverse the order
+	    intnumber = red|green|blue;
+	 
+	    // toString converts a number to a hexstring
+	    var HTMLcolor = intnumber.toString(16);
+	 
+	    //template adds # for standard HTML #RRGGBB
+	    HTMLcolor = template.substring(0,7 - HTMLcolor.length) + HTMLcolor;
+	 
+	    return HTMLcolor;
+	} 
+	/**
+	* Number should be between 0 and 1, where 0 is black an 1 is white. 
+	**/
+	function numberToHTMLcolorGrayScale(number) {
+		// isolate the colors - really not necessary
+	    var red=number*255, green=number*255, blue=number*255;
+	    
+	    var template = "#000000";
+	 
+	    // in the MS Windows world RGB colors
+	    // are 0xBBGGRR because of the way Intel chips store bytes
+	    red = (red&0x0000ff) << 16;
+	    green = (green&0x0000ff)<<8;
+	    blue = (blue&0x0000ff);
+	    
+	    // mask out each color and reverse the order
+	    intnumber = red|green|blue;
+	 
+	    // toString converts a number to a hexstring
+	    var HTMLcolor = intnumber.toString(16);
+	 
+	    //template adds # for standard HTML #RRGGBB
+	    HTMLcolor = template.substring(0,7 - HTMLcolor.length) + HTMLcolor;
+	 
+	    return HTMLcolor;
+	}
+</script>
+</head>
+<body onload="init()">
+	<canvas id="a" width="900" height="900"></canvas>
+	<div id="floatdiv" style="  
+    position:absolute;  
+    width:200px;height:50px;top:10px;right:10px;  
+    padding:16px;background:#FFFFFF;  
+    border:2px solid #2266AA;  
+    z-index:100">  
+	<table>
+		<tr>
+			<td>Info1</td><td>info2</td>
+		</tr>
+		<tr>
+			<td id='infoCol1'>Column1</td><td id='infoCol2'>Colum2</td>
+		</tr>
+	</table>  
+	</div> 
+</body>
+</html>

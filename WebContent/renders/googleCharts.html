@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Google chart</title>
+      <script type="text/javascript">
+  		function createDiv(number) {
+			console.log("doc "+document.body);
+            var divTag = document.createElement("div"); 
+            divTag.id = "chart_div"+number; 
+            divTag.setAttribute("align", "center"); 
+            divTag.className = "dynamicDiv"; 
+            document.body.appendChild(divTag); 
+        }
+		var output=JSON.parse(opener.document.getElementById('result').value);
+		var result = output['result'];
+		google.load("visualization", "1", {packages:["corechart"]});
+		function drawChart(){
+			var indexK=0;
+			for (var metaVar in result){
+				if(result[metaVar].type == 'googleChart'){
+					//createDiv(indexK);
+					var googleChart = result[metaVar]['value'];
+					var data = google.visualization.arrayToDataTable(googleChart['data']);
+        			var options = googleChart['options']
+
+					var chart = new google.visualization.LineChart(document.getElementById("chart_div"+indexK++));
+					chart.draw(data, options);
+				}
+			
+			}
+			indexK++;
+		}
+		google.setOnLoadCallback(drawChart);
+	  </script>
+  </head>
+  <body>
+  	<table>
+  		<tr>
+  			<td><div id="chart_div0" style="width: 500px; height: 400px;"></div></td>
+  			<td><div id="chart_div1" style="width: 500px; height: 400px;"></div></td>
+  		</tr>
+  		<tr>
+  		  	<td><div id="chart_div2" style="width: 500px; height: 400px;"></div></td>
+  			<td><div id="chart_div3" style="width: 500px; height: 400px;"></div></td>
+  		</tr>
+  	</table>
+  </body>
+</html>

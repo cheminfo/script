@@ -1,0 +1,28 @@
+.help {font-size: 12px;}
+
+.help .title {font-size: 14px; font-weight:bold; margin-top: 20px; }
+
+.help .usage {font-size: 14px; font-style: italic;}
+.help .short {font-size: 12px; font-weight: bold; margin-top: 5px; margin-bottom: 5px;}
+.help .long {font-size: 12px; font-style: italic;}
+
+.help .parameters {margin-top: 10px; }
+.help .parameters .title {font-weight: bold; }
+.help .parameters .name {color: green; font-weight: bold;}
+.help .parameters .value {color: #333333; margin-left: 10px;}
+
+.help .returns {margin-top: 10px; }
+.help .returns .title {font-weight: bold; }
+.help .returns .name {color: black; font-weight: bold;}
+.help .returns .value {color: #333333; margin-left: 10px;}
+
+
+.help .options {margin-top: 10px; }
+.help .options .title {font-weight: bold; margin-top: 20px; }
+.help .options .name {color: green; font-weight: bold;}
+.help .options .value {color: #333333; margin-left: 10px;}
+
+.help .examples {margin-top: 10px; }
+.help .examples .title {font-weight: bold; margin-top: 20px; }
+.help .examples .name {color: blue; font-weight: bold;}
+.help .examples .value {color: #333333; margin-left: 10px;}

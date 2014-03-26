@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<title>Script</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./assets/fonts/css/font-awesome.min.css" rel="stylesheet">
+	<link href="./assets/css/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
+	<link href="./assets/js/codemirror/lib/codemirror.css" rel="stylesheet">
+	<link href="./assets/css/show-hint.css" rel="stylesheet">
+	<link href="./assets/css/ui.dynatree.css" rel="stylesheet">
+	<link href="./assets/css/jquery.contextMenu.css" rel="stylesheet">
+	<link href="./assets/css/main.css" rel="stylesheet">
+	<link href="./assets/js/codemirror/addon/tern/tern.css" rel="stylesheet">
+
+	<!-- jQuery -->
+	<script src="./assets/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="./assets/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="./assets/js/jquery.cookie.js" type="text/javascript"></script>
+	<script src="./assets/js/jquery.dynatree.js" type="text/javascript"></script>
+	<script src="./assets/js/jquery.contextMenu.js" type="text/javascript"></script>
+	<!-- Code Mirror official-->
+	<script src="./assets/js/codemirror/lib/codemirror.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/edit/matchbrackets.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/search/searchcursor.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/search/match-highlighter.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/hint/show-hint.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/hint/javascript-hint.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/addon/tern/tern.js" type="text/javascript"></script>
+	<!--  Code Mirror languages -->
+	<script src="./assets/js/codemirror/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script src="./assets/js/codemirror/mode/xml/xml.js" type="text/javascript"></script>
+		<!-- Tern -->
+	<script src="./assets/js/tern/acorn.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/acorn-loose.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/walk.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/signal.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/tern.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/def.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/comment.js" type="text/javascript"></script>
+	<script src="./assets/js/tern/infer.js" type="text/javascript"></script>
+	<!-- Various -->
+	<script src="./assets/js/diff/javascript/javascript/diff_match_patch.js" type="text/javascript"></script>
+	<!-- Home made -->
+	<script src="./assets/js/script.addresses.js" type="text/javascript"></script>
+	<script src="./assets/js/script.console.js" type="text/javascript"></script>
+	<script src="./assets/js/script.options.js" type="text/javascript"></script>
+	<script src="./assets/js/script.projectsexplorer.js" type="text/javascript"></script>
+	<script src="./assets/js/script.history.js" type="text/javascript"></script>
+	<script src="./assets/js/script.nodeinfo.js" type="text/javascript"></script>
+	<script src="./assets/js/script.codemirror.js" type="text/javascript"></script>
+	<script src="./assets/js/script.help2.js" type="text/javascript"></script>
+	<script src="./assets/js/script.runscript.js" type="text/javascript"></script>
+	<script src="./assets/js/script.upload.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+	<!-- NAVIGATE THE FOLDERS -->
+	<div id="projects-explorer" class="">
+
+		<i class="icon-chevron-sign-left icon-2x projects-explorer-toggler"></i>
+
+		<div id="dynatree-container">
+			<!-- Loader in JS -->
+		</div>
+
+	</div>
+	<!-- /NAVIGATE THE FOLDERS -->
+
+
+	<div id="options" class="clearfix">
+		<div id="visualizer-version"></div>
+		<a href="#" id="link-options-close">Hide options <i
+			class="icon-level-up"></i></a>
+	</div>
+
+
+
+	<div class="page-content">
+
+
+		<div id="project-container">
+
+			<!-- HEADER -->
+			<div class="navbar">
+				<div class="navbar-inner">
+
+					<span class="brand"><i class="icon-bar-chart"></i> Project <span
+						id="project-name">name</span> </span>
+
+					<ul class="nav" id="menu">
+						<li id="menu-link-scripting"><a href="#">Scripting</a></li>
+						<li id="menu-link-history"><a href="#">History</a></li>
+					</ul>
+
+					<div class="navbar-text pull-right">
+						<a href="#" id="link-projects-explorer"
+							class="projects-explorer-toggler">Projects explorer <i
+							class="icon-archive"></i></a> <a href="#" id="link-options">Options
+							<i class="icon-gear"></i>
+						</a>
+					</div>
+
+				</div>
+			</div>
+			<!-- /HEADER -->
+
+			<div class="container-fluid">
+
+
+
+				<div class="row-fluid">
+				
+					<div class="tab-page" id="tab-history">
+
+						<div>
+							<a href="#" id="current-file-link" class="btn btn-primary">Current file as file 'to'</a>
+						</div>
+						<div id="history-diff">
+							<div id="history-diff-content">
+
+							</div>
+						</div>
+
+
+						<div id="history-versions">
+
+						</div>
+
+					</div>
+
+					<div class="tab-page" id="tab-scripting">
+
+						<!-- CODE EDITOR -->
+						<div class="span8" id="editor-panel">
+
+							<div class="mod" id="editor-div">
+
+								<div class="row-fluid">
+
+									<textarea rows="55" cols="50" class="span12" id="code-editor"></textarea>
+
+								</div>
+
+								<div class="pull-right input-append">
+									<input type="text" id="script-name" class="text-right" value="" />
+									<span class="add-on">.js</span> <span class="btn add-on"
+										id="save-script"><i class="icon-save"></i></span>
+								</div>
+
+								<div class="btn-group">
+
+									<div class="btn btn-primary runner" id="btn-run-script">
+										<span class="icon-stack"> <i
+											class="icon-cog icon-stack-base"></i>
+										</span> Only run script
+									</div>
+
+									<div class="btn btn-success runner"
+										id="btn-run-script-visualize">
+										<span class="icon-stack"> <i
+											class="icon-cog icon-stack-base"></i> <i
+											class="icon-eye-open text-success"></i>
+										</span> Run script &amp; visualize
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+						<!-- /CODE EDITOR -->
+
+
+
+						<!-- TABS -->
+						<div class="span4" id="right-panel">
+
+							<div id="side-tabs">
+
+								<!-- TABS LINKS -->
+								<ul>
+
+									<!-- RESULT -->
+									<li><a href="#side-tabs-1"> <i class="icon-list-alt"></i>
+											Console
+									</a></li>
+
+									<!-- HELP -->
+									<li><a href="#side-tabs-2"> <i class="icon-question"></i>
+											Help
+									</a></li>
+
+								</ul>
+								<!-- /TABS LINKS -->
+
+								<div class="" id="side-tabs-1">
+
+
+									<div class="pull-right">
+										<span class="btn btn-small active" id="results-btn-console"
+											title="Toggle console logs"><i class="icon-cloud"></i></span>
+										<span class="btn btn-small" id="clear-console"><i
+											class="icon-eraser"></i></span>
+									</div>
+
+									<div class="btn-group">
+										<span class="btn btn-small btn-success results-btn disabled"
+											id="results-btn-visualize"><i class="icon-eye-open"></i>
+											Visualize last result</span> <span
+											class="btn btn-small results-btn disabled"
+											id="results-btn-share" title="Share result"><i
+											class="icon-share"></i></span>
+									</div>
+
+									<div id="console">Editor launched</div>
+
+								</div>
+								<div id="side-tabs-2">
+							 		<div id="help-search">
+										<input type="search" id="help-search-input" />
+									</div> 
+									<div id="help-text"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- /TABS -->
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- WHEN NO PROJECT -->
+		<div id="no-project" class="projects-explorer-show">
+			<i class="icon-download-alt"></i> Please select a project.
+		</div>
+		<!-- / WHEN NO PROJECT -->
+
+	</div>
+
+	<!-- SPECIAL BLOCKS -->
+	<div id="modal-tinylink" title="Share this result">
+		<input type="text" id="link-share" value="" /> <a href="#"
+			class="btn" id="link-share-btn"><i class="icon-envelope"></i>
+			Send by e-mail</a>
+	</div>
+	<!-- /SPECIAL BLOCKS -->
+
+</body>
+</html>

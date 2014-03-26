@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Plate validator</title>
+	
+    <script type="text/javascript" src="/script/javascript/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/script/javascript/fileapi/FileAPI.js"></script>
+    <script type="text/javascript" src="/script/javascript/upload.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+
+<h1>Screening plate checker</h1>
+<div class="help">
+<p>This web page allows to analyze a FPT file and to compare it to expected molecular formula.
+An optional SDF file will allow to visualize the chemical structure. You will need to upload <b>experimental.fpt</b> and <b>mfs.txt</b>.
+The mfs.txt contains 2 columns: the first is the reference and the second one the molecular formula.</p>
+<p>In general currently only a ".FPT" and a ".SDF" file is enough to proceed with the analysis.</p>
+<p><a href="https://docs.google.com/document/d/1DHSaP8smqru5o2TmSRXJMOYdmEjdLm9MVBolK94TVeA/edit?usp=sharing" target="_blank">Google docs comments</a></p>
+</div>
+
+
+	<table style="width:100%;">
+	<tr>
+		<td class="columnLeft" valign="top" rowspan=2>
+			Available data set:<br>
+			<table width="100%">
+				<tr>
+					<td>
+						<div id="dataSet"></div>
+					</td>
+				</tr>
+				<tr><td>
+					 <button onclick="newDataSet();">New data set</button>
+				</td></tr>
+			</table>
+		</td>
+		<td class="columnRight" valign="top">
+			<div id="running">
+				<div id="runningIncluded">
+					<div id="runningInfo"></div>
+					<div id="circle_1" class="running"></div>	
+					<div id="circle_2" class="running"></div>
+					<div id="circle_3" class="running"></div>
+				</div>
+			</div>
+			<div id="notrunning">
+				<div id="currentDataSet">&nbsp;</div>
+				<div id="currentDataInfoContainer">
+					<div id="currentDataInfo">
+						Available files - experimental.fpt: <span id="fptExists" class="exists"></span>&nbsp;
+						mfs.txt: <span id="mfExists" class="exists"></span>&nbsp;
+						structures.sdf: <span id="sdfExists" class="exists"></span>
+						<table>
+				  			<tr>
+					  			<td valign="top">
+						  			<div id="dropbox" style="display: none">Drag and drop files here...</div>
+					      			<div id="status"></div>
+					  			</td>
+					  			<td class="currentDataFolder" valign="top">
+					  				Existing files:<br>
+					  				<div id="currentDataFolder"></div>
+					  			</td>
+				  			</tr>
+			  			</table>
+			  		</div>
+				</div>
+				<div class="debug">
+		  			<textarea id="initScript" name="initScript" rows=4 cols=90></textarea><br>
+	  				<textarea id="script" name="script" rows=4 cols=90></textarea><br>
+	  				Current data set: <input type="text" readonly="readonly" id="resultBranch" value="Master"></input><br>
+	  				Current path: <input class="currentPath" readonly="readonly" id="currentPath" type="text" value="" size="100"><br> 
+					Current data path: <input class="currentDataPath" readonly="readonly" id="currentDataPath" type="text" value="" size="100"> 
+		  		</div>
+		  		<div class="debug">
+		  			Output:<br><textarea name="result" id="result" rows=2 cols=90></textarea> <button id='json' onClick="openJSON();">JSON</button>
+		  		</div>
+		  		<div style="height:50px; vertical-align: center">
+		  			<select id="visualizerList"></select>
+					<button class="run" id="reopenVisualizer" onclick="reopenVisualizer();">Visualize</button>
+				    <button class="run" id="runscript" onclick="runScript({view:true})">Run script and visualize</button>
+				</div>
+				<div>
+					Tiny URL: <input type="text" size="100" id="tinyurl">
+		  		</div>
+		  	</div>
+		</td>
+	</tr>
+	</table>
+	
+   
+	<script type="text/javascript" src="utilities.js"></script>  
+	<script type="text/javascript" src="script.js"></script>   
+	<script type="text/javascript" src="visualizer.js"></script>   
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<html>
+<head>
+
+<script type="text/javascript" src="../../javascript/prototype/prototype.js"></script>
+<script type="text/javascript" src="../../javascript/includes/json_parse.js"></script>
+<script type="text/javascript" src="../../javascript/includes/replacer.js"></script>
+<link rel="stylesheet" href="ChemDoodleWeb.css" type="text/css">
+<script type="text/javascript" src="ChemDoodleWeb-libs.js"></script>
+<script type="text/javascript" src="ChemDoodleWeb.js"></script>
+
+<script>
+	jQuery.noConflict();
+</script>
+
+</head>
+<body onload="init();">
+
+	<script>
+			var jcampCanvas = new ChemDoodle.PerspectiveCanvas('jcampCanvas', 800, 600);
+			jcampCanvas.specs.plots_showYAxis = true;
+			jcampCanvas.specs.plots_flipXAxis = false;
+			jcampCanvas.specs.plots_showIntegration=false;
+			jcampCanvas.specs.plots_showGrid=true;
+			jcampCanvas.specs.plots_flipXAxis=true;
+			jcampCanvas.specs.backgroundColor = '#EEEEEE';
+	</script>
+<br>
+
+<button onclick="addJcamp('http://localhost:8080/servletScript/spectra/10071');">1</button>							
+
+<script>
+var spectra;
+
+function addJcamp(url, options) {
+	new Ajax.Request(url, 
+		{	method: 'get',  
+			onSuccess: function(resp) {
+				var spectrum = ChemDoodle.readJCAMP(resp.responseText);
+				var color = '#000000';
+			    if(options){
+			    	if(options['color'])
+			    		color=options['color'];
+			    }
+				spectrum.plots_color=color;
+				
+				jcampCanvas.loadSpectrum(spectrum);
+			},
+			onFailure: function(){ alert('Something went wrong...') }	 			
+		}
+	);
+}
+
+function addJcampFromText(spectrum, options) {
+	var spectrumC = ChemDoodle.readJCAMP(spectrum);
+	
+	var color = '#000000';
+	if(options){
+    	if(options['color'])
+    		color=options['color'];
+    }
+	spectrumC.plots_color=color;
+	
+	jcampCanvas.loadSpectrum(spectrumC);
+}
+
+function init(){
+	var output=json_parse(opener.$("result").value,replacer);
+	var result = output['result'];
+	var spectrum=result.spectrum.value;
+	var options = result.spectrum.options;
+  
+	if(isURL(spectrum)){
+		addJcamp(spectrum,options);
+	}
+	else{
+		addJcampFromText(spectrum,options);
+	}
+}
+
+function isURL(argvalue) {
+	  if (argvalue.indexOf(" ") != -1)
+	    return false;
+	  else if (argvalue.indexOf("http://") == -1)
+	    return false;
+	  else if (argvalue == "http://")
+	    return false;
+	  else if (argvalue.indexOf("http://") > 0)
+	    return false;
+	  argvalue = argvalue.substring(7, argvalue.length);
+	  
+	  if (argvalue.indexOf("/") != -1) {
+	    argvalue = argvalue.substring(0, argvalue.indexOf("/"));
+	    if (argvalue.charAt(argvalue.length - 1) == ".")
+	      return false;
+	  }
+
+	  if (argvalue.indexOf(":") != -1) {
+	    if (argvalue.indexOf(":") == (argvalue.length - 1))
+	      return false;
+	    else if (argvalue.charAt(argvalue.indexOf(":") + 1) == ".")
+	      return false;
+	    argvalue = argvalue.substring(0, argvalue.indexOf(":"));
+	    if (argvalue.charAt(argvalue.length - 1) == ".")
+	      return false;
+	  }
+	  return true;
+
+}
+</script>
+</body>
+</html>
+

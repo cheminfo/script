@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+$(document).ready(function() {
+	console.log('ready');
+function registerSSE() {
+	console.log('do register 2');
+	var source = new EventSource("../GetResultServlet");
+	console.log('has registered');
+	source.onmessage = function(e) {
+		console.log("received");
+		var el = document.getElementById('salut');
+		el.innerHTML = e;
+	}
+	
+}
+registerSSE();
+
+
+});
+-->
+</script>
+
+
+</head>
+<body>
+<div id="salut"></div>
+</body></html>

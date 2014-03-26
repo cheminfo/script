@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.5, maximum-scale=2.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+	    
+	    <style>
+
+	    	table .production {
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+				border-style: solid ;
+				border-width: 5px;
+				height: 400px;
+				width: 300px;
+			}
+			
+		    table th {
+			    font-size: 20px;
+				color: #ffffff;
+				font-weight: bold;
+			}
+			table td {
+			    text-align: center;
+			    color: #ffffff;
+			}
+			.title {
+				padding: 20px;
+				font-size: 24px;
+				font-weight: bold;
+				text-align: center;
+				color: #FFFFFF;
+				
+			}
+			#view {
+				background-color:gray;
+			}
+	    </style>
+	    
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="../common/fileUploader.js"></script>
+		<script src="../common/dragDropFileUploader.js"></script>
+		<script src="../common/runScript.js"></script>
+		<LINK rel="stylesheet" href="../common/style.css">
+	    
+		<title>Image analyzer</title>
+  
+
+    </head>
+    <body>
+    
+
+    
+    
+    <table id="global" width="100%">
+    	<tr>
+    		<td>
+    			<table class="production">
+			    	<tr>
+			    		<td class="title">
+			    			Image analyzer
+			    		</td>
+			    	</tr>
+			    	<tr>
+				   		<th>
+		    				Select an image
+		    			</th>
+		    		</tr>
+			    	<tr>
+			    		<td>
+			    			<input type="file" id="capture" accept="image/*" capture="camera">
+			    			<p>&nbsp;</p>
+			    			<span id="dropbox" class="CI-fileUploader-dropbox">Drop JPEG image here...</span><br>
+			    			<select id="view">
+								<option value="view.json">Full view</option>
+								<option value="viewResult.json">Just result</option>
+							</select>
+			     		</td>	    	
+			    	</tr>
+			    </table>
+			</td>
+			<td>
+				<table>
+					<tr>
+					<td>
+			    		    <div class="help">
+						    	Get an IC50 from a picture with blue / red spots.
+						    </div>
+			    			<span class="CI-fileUploader-highlight"></span>
+			    			<br>
+			    			<img src="test.jpg" height="200px" id="demo" /><br>
+			    			Click on this image to run a test
+			    		</td>
+					</tr>
+				
+				</table>
+			</td>
+    		
+  
+    		
+		</tr>
+    </table>
+   
+
+	<div id="status"></div>
+
+		
+     <textarea style="display:none" id="script" cols=60 rows=10></textarea>
+
+	    
+
+        <script>
+	
+        	$("#demo").click(function(from) {
+        		var imageURL=location.href.replace(/\/[^\/]*$/,"")+"/test.jpg";
+        		$("#global").hide();
+        		runScript(imageURL);
+        	})
+        
+
+ 
+        	
+			var statusDivID="status";  
+			var baseURL=location.pathname.replace(/(\/[^\/]+\/).*/,"$1")
+			// ATTACH AN UPLOAD PROCESS TO A DIV
+		    var saveTmpJpgURL=baseURL+"//HD/Save/ejXUPdmzRX?filename=test%40patiny.com%2F%2FProcess%2F.tmp%2F%3Ctimestamp%3E%3Crandom%3E.jpg";
+			function uploadDone(result) {
+				$("#"+statusDivID).html("Upload completed.");
+				console.log(result.result.loadURL);
+				runScript(result.result.loadURL);
+			}
+			
+			new CI.script.dragDropFileUploader("dropbox", statusDivID, saveTmpJpgURL, {start:function() {$("#global").hide();},done:uploadDone});
+			new CI.script.fileUploader("capture", statusDivID, saveTmpJpgURL, {start:function() {$("#global").hide();},done:uploadDone});
+			
+			
+			// RUNNING THE SCRIPT
+		    var runScriptURL=baseURL+"/HD/Run/hCsYMTSSVJ?filename=test%40patiny.com%2F%2FProcess%2F.tmp%2Fresult%3Ctimestamp%3E%3Crandom%3E%2F";
+			function runScript(fileURL) {
+				$("#"+statusDivID).html("Processing the image ...");
+				var script="var fileURL='"+fileURL+"';\r\n";
+				script+=$("#script").val();
+				CI.script.run(runScriptURL, script, runScriptDone);
+			}
+			function runScriptDone(result) {
+				$("#"+statusDivID).html("Execution done");
+				console.log(result);
+				// we will open a visualizer
+				openVisualizer(result);
+			}
+	
+			// OPEN THE VISUALIZER
+			
+			var viewURL;
+			function setView(event) {
+				viewURL=location.href.replace(/\/[^\/]*$/,"")+"/"+$(event.target).val();
+			}
+			$("#view").change(setView);
+			$("#view").change();
+			
+			var visualizerURL="http://www.cheminfo.org/visualizer/release/20130605/index.html";
+			function openVisualizer(result) {
+				$("#global").show();
+				$("#status").html("");
+				var dataURL=escape(result._dataUrl);
+				var url=visualizerURL+"?dataURL="+dataURL+"&viewURL="+escape(viewURL);
+				
+				location.href=url;
+				
+				// window.open(url);
+			}
+			
+	
+			$.ajax({
+				url:"script.js",
+				dataType:"text",
+				success: function(result) {
+					$("#script").val(result);
+				},
+				error: function(result) {
+					console.log(result);
+				}
+			});
+			
+		
+        </script>
+        
+    
+
+    </body>
+</html>

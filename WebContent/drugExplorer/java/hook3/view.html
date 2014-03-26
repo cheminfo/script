@@ -1,0 +1,65 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf8">
+	
+	<script type="text/javascript" src="../../javascript/prototype/prototype.js"></script>
+	<script type="text/javascript" src="../../javascript/prototype/prototype-object-event.js"></script>
+	<script type="text/javascript" src="../../javascript/prototype/prototype-tabs.js"></script>
+	
+	<script language="javascript" src="nemo.js"></script>
+	
+	<script language="javascript">
+		var nemoWindow=opener.nemoWindow;
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body onunload="closingWindow();" onfocus="window.setTimeout('refreshWindows();',500);">
+
+
+<applet code='org.cheminfo.hook.nemo.Nemo' name='Nemo' id='Nemo' archive='nemo.jar' codebase="." width="100%" height="95%">
+<param name="OPTIONS" value="smart,tools,undo,flags,colors,insert,processing"/>
+You have to enable Java and JavaScritpt on your machine !
+</applet>
+
+
+<script language="javascript">
+	var nemo;
+	
+	// this is used to load a saved view
+
+	
+	// we will wait till the applet is completely loaded
+	
+	function waitApplet() {
+		var isActive=false;
+		try {
+			var view=document.getElementById("Nemo").getXMLView()+"";
+			if (view.length>0) {
+				isActive=true;
+			}
+		} catch (err) {}
+		if (isActive) {
+			appletActive();
+		} else {
+			window.setTimeout("waitApplet();",250);
+		}
+	}
+
+	function appletActive() {
+		nemo = new Nemo(document.getElementById("Nemo"));
+		nemoWindow.onload(nemo);
+	}
+
+	window.setTimeout("waitApplet();",250);
+</script>
+
+<script language="javascript">
+document.body.style.background=nemoWindow.backgroundColor;
+</script>
+
+
+
+</body>
+</html>

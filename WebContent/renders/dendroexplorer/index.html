@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Dendrogram</title>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+	
+	<!-- CSS Files -->
+	<link type="text/css" href="style.css" rel="stylesheet" />
+	
+	<!-- JIT Library File -->
+	<script language="javascript" type="text/javascript" src="jit1.js"></script>
+	
+	<!-- Example File -->
+	<script language="javascript" type="text/javascript" src="config.js"></script>
+	
+	<style>
+		body, table, tr, html {
+			margin: 0;
+			width: 100%;
+			height:100%;
+		    min-height:100%;
+	 	}
+	</style>
+	
+</head>
+
+<body>
+
+<table>
+<tr>
+<td>
+<div class="dendrogram" id="infovis"></div>  
+</td>
+<td width="200">
+<div id="info"></div>  
+</td>
+</tr></table>
+  
+<script>
+function initDendrogram() {
+	var tree;
+	for (var metaVar in result){
+		if(result[metaVar].type == 'tree') {
+			tree=result[metaVar].value;
+		}
+	}
+	if (tree) {
+		document.getElementById("infovis").innerHTML="";
+		createDendrogram(tree, {
+			targetDiv:"infovis",
+			nodeSize: 1,
+			nodeColor: "yellow",
+			nodeEnter:function(node) {
+				var info=document.getElementById("info");
+				if (info) {
+					var information="";
+					if (node && node.data) {
+						for (var prop in node.data) {
+							var length=node.data[prop].length;
+							if (length>20) {
+								information+="<b>"+prop + "</b>: " + node.data[prop].substring(0,10)+"..."+node.data[prop].substring(length-10)+"<br>";
+							} else {
+								information+="<b>"+prop + "</b>: " + node.data[prop]+"<br>";
+							}
+					   }
+					}
+					info.innerHTML=information;
+				}
+			},
+			nodeLeave: function(node) {
+				var info=document.getElementById("info");
+				if (info) info.innerHTML="";
+			},
+			endNodeLabel: function(node) {
+				if (node.data && node.data.label) return node.data.label;
+				return "";
+			},
+			nodeLabel: function(node) {
+				if (node.data && node.data.label) return node.data.label;
+				return "";
+			},
+			labelStyle: function(style, node) {
+	            // style.cursor = 'pointer';
+	             if (node.data && node.data.labelSize) {
+	            	style.fontSize = node.data.labelSize;
+	            }
+	            if (node.data && node.data.labelColor) {
+	            	style.color = node.data.labelColor;
+	            }
+			},
+		//	endNodeStyle: function(node) {
+		//
+		//	},
+			nodeStyle: function(node) {
+				if (node.data && node.data.nodeSize) {
+	            	node.Node.dim = node.data.nodeSize;
+		        }
+				if (node.data && node.data.nodeColor) {
+	            	node.Node.color = node.data.nodeColor;
+	        	}
+			}
+			
+		});
+	}
+}
+</script>
+          
+          
+          
+<script>
+	var result={};
+	function getURLParameter(name) {
+	    return unescape(
+	        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+	    );
+	}
+	
+	var urlInit=getURLParameter("url");
+	if (urlInit && urlInit!=null && urlInit!="null") {
+		$.get(urlInit,
+			{},      
+			function(data) {
+				result=JSON.parse(data);
+				initDendrogram();
+			}
+		);
+	} else {
+		result=opener.result;
+		initDendrogram();
+	}
+	
+
+	jQuery(window).resize(function() {
+		initDendrogram();
+	});
+	
+</script>
+
+</body>
+</html>

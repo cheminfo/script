@@ -1,0 +1,4 @@
+.getAutoHeight {
+   position: relative;
+   overflow: auto; /* edit by thobens: overflow: hidden seems to be better, as (at least) IE 8 shows always a disabled scrollbar with overflow: auto */
+}

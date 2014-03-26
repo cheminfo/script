@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="/servletScript/javascript/includes/table_cmp.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="table.css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	var result={};
+	result.distanceMatrix=[[1,2,3],[4,5,6],[7,8,9]];
+	result.rowDescription=[{experimental:{type:"jcamp",url:"exp1.jdx"},theoretical:{type:"jcamp",url:"theo1"},label:"First row"},{experimental:{type:"jcamp",url:"exp2.jdx"},theoretical:{type:"jcamp",url:"theo2"},label:"Second row row"}];
+	result.columnDescription={type:"array",value:["First","Second","Third"],options:{onclick:function(column){alert(column)}}};
+	
+	/*
+	var matrix=[];
+	for (var i=0; i<1000; i++) {
+		var row=[];	
+		for (var j=0; j<1000; j++) {
+			row[j]=i+j/10000;
+		}
+		matrix[i]=row;;
+	}
+	result.distanceMatrix=matrix;
+	*/
+	
+
+	var distance=result.distanceMatrix;
+	var infoRows=result.rowDescription;
+	var infoCols=result.columnDescription;
+	
+	
+	function init(){
+		
+		//Add the head.
+		addHeadToTable('mainTableHead',infoCols);
+		//Add rows.
+		for(var i=0;i<infoRows.length;i++) {
+			addRowToTable('mainTableBody', infoRows[i].label,distance[i]);
+		}
+	}
+	
+	function addHeadToTable(headTableName,info){
+	  	var header = document.getElementById(headTableName);
+	  	var oCell = header.childNodes.item(0);
+    	oCell.innerHTML= "Sort";
+	    for (var i=0; i<info.length; i++){
+	    	oCell = header.children.item(i+1);
+	    	oCell.innerHTML= info[i].label;
+	    }
+	    var limit = header.children.length
+	    for(var i=limit-1;i>info.length;i--){
+	    	header.deleteCell(i) ;
+	    	
+	    }
+	}
+	
+	function addRowToTable(tableName,rowLabel,info)
+	{
+	  	var tbl = document.getElementById(tableName);
+	  	lastRow = tbl.rows.length;
+	  	// if there's no header row in the table, then iteration = lastRow + 1
+	  	var iteration = lastRow+1;
+	 	var oRow = tbl.insertRow(lastRow);
+	 	if(iteration%2==0)
+	 		oRow.setAttribute('class',"alternate");
+	 	else
+	 		oRow.setAttribute('class',"");
+	 	var oCell = oRow.insertCell(-1);
+	    oCell.innerHTML = rowLabel;
+	  
+	    for (i=0; i<info.length; i++){
+		      oCell = oRow.insertCell(-1);
+		      oCell.innerHTML = info[i].toFixed(4);
+		      oCell.setAttribute('onMouseOver','showInfo('+lastRow+','+i+');');
+		      oCell.setAttribute('onClick','showSpectra('+lastRow+','+i+');');
+		}
+	}
+	
+
+
+</script>
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+				<table class="example table-autosort:0 table-stripeclass:alternate boldtable" id="mainTable">
+					<thead>
+					   <tr id='mainTableHead'>
+						<th class="table-sortable:default"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+						<th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th><th class="table-sortable:numeric"></th>
+					   </tr>
+					</thead> 
+					<tbody id="mainTableBody">
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</table>	
+	
+	<script>init();</script>
+	 
+</body>
+</html>

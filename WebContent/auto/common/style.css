@@ -1,0 +1,44 @@
+body, th, td {
+	font-family: "Helvetica Neue", Helvetica, Arial, Serif;
+	font-size: 12px;
+	color: black;
+}
+
+body {
+	background-color: #000000;
+}
+
+
+
+.help {
+	padding: 10px;
+	font-size: 14px;
+	color: #878787;
+	font-weight: bold;
+}
+
+#status {
+	font-size: 30px;
+	height: 50px;
+	width: 300 px;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+}
+
+.CI-fileUploader-dropbox {
+    width: 300px;
+    height: 100px;
+    border: 6px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+	font-color: black;
+    color: gray;
+	text-align: center;
+}
+
+.CI-fileUploader-dropboxHover {
+	border: 6px solid red;
+}
+

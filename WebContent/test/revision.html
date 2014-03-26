@@ -1,0 +1,107 @@
+<html>
+<head>
+
+<script language='javascript' src='/script/javascript/jquery/jquery.min.js'></script>
+<script>
+
+	var baseURL="/script/Revision/hVfIOCh25l/test@patiny.com/views/"
+</script>
+
+</head>
+<body>
+Content field (may be saved):<br>
+<textarea id="content" cols=100 rows=10>
+</textarea>
+<br>
+Base URL: <script>document.write(baseURL)</script><br>
+
+Branch: <input type="text" id="branch" value="Master"><br>
+Revision: <input type="text" id="revision" value=""><br>
+Filename: <input type="text" id="filename" value=""><br>
+
+
+<button onClick="getList(jQuery('#name').val())">Dir</button>
+<button onClick="load(jQuery('#name').val())">Load file</button>
+<button onClick="save(jQuery('#content').val(),jQuery('#name').val())">Save content</button>
+<button onClick="getKey(jQuery('#filename').val())">Get Key</button>
+
+
+<!-- 
+<button onClick="getFullList(jQuery('#name').val())">Get recursive list</button>
+<button onClick="createFolder(jQuery('#name').val())">Create folder</button>
+<button onClick="deleteFolder(jQuery('#name').val())">Delete folder</button>
+<button onClick="deleteFile(jQuery('#name').val())">Delete file</button>
+New full relative name: <input id="newName">
+<button onClick="rename(jQuery('#name').val(),jQuery('#newName').val())">Rename</button>
+ -->
+ 
+
+<br>
+Result field:<br>
+<textarea id="result" cols=100 rows=10>
+</textarea>
+<br>
+
+
+
+<script>
+
+	function getList(name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"Dir"
+				},
+				function(data) {
+					jQuery("#result").val(JSON.stringify(data));
+		});
+	}
+	
+	
+	function load(name) {
+		jQuery.get(baseURL,
+			{
+				"action":"Load",
+				"branch":$("#branch").val(),
+				"revision":$("#revision").val()
+			},
+			function(data) {
+				jQuery("#content").val(data);
+			},
+			"text"
+		);
+	}
+	
+	function save(content,name) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"Save",
+					"branch":$("#branch").val(),
+					"revision":$("#revision").val(),
+					"content":content
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").val(JSON.stringify(data));
+		});
+	}
+
+	function getKey(filename) {
+		jQuery.getJSON(baseURL,
+				{
+					"action":"GetKeys",
+					"filename":filename
+				},
+				function(data) {
+					console.log(data);
+					jQuery("#result").val(JSON.stringify(data));
+		});
+	}
+	
+	
+	
+	
+	
+</script>
+
+
+</body></html>

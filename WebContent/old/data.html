@@ -1,0 +1,90 @@
+
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf8">
+		<script type="text/javascript" src="prototype.js"></script>
+		<style>
+			body, tbody {font-family: helvetica, arial, sans-serif}
+			
+		</style>
+		<title>Submit coffee sample</title>
+	</head>
+
+	<body>
+	
+	<div id="parameter">
+	<table>
+	<tr>
+	<th>
+		Product code
+	</th>
+	<td>
+		<input type="text" id="catalogID">
+	</td>
+	</tr>
+	<tr>
+	<th>
+		Altitude
+	</th>
+	<td>
+		<input type="text" id="Altitude">
+	</td>
+	</tr>
+		<tr>
+	<th>
+		Coffee type
+	</th>
+	<td>
+		<select id="Coffee type">
+			<option value="Green">Green</option>
+			<option value="Red">Red</option>
+			<option value="Pink">Pink</option>
+		</select>
+	</td>
+	</tr>		
+	</table>
+	</div>
+	
+	
+	
+	<form action="http://clo1v1.mylims.org/lims/Lims" method="POST"  id="theForm" name="theForm">
+		<input type="hidden" name="action" value="SubmitXml">
+		<input type="hidden" name="xmlFile">
+		<input type="submit" onClick="convertToXMLlims()">
+	</form>
+	
+
+	
+	
+<script language="javascript">
+
+function convertToXMLlims() {
+	var xml="";
+	xml+="<entry>";
+	xml+="<userKey>0OYYiShv1gYwsrFhHebyGQ==</userKey>";
+	xml+="<userEmail>similarity@mylims.org</userEmail>";
+	xml+="<anonymousRead>false</anonymousRead>";
+	xml+="<catalogID>"+$('catalogID').value+"</catalogID>";
+	$('parameter').select('input, select').each(function(object) {
+		if (object.id!="catalogID") {
+			xml+="<parameter>";
+			xml+="<description>"+object.id+"</description>";
+			xml+="<value>"+object.value+"</value>";
+			xml+="</parameter>";
+		}
+	});
+	xml+="</entry>";
+	$('theForm').xmlFile.value=xml;
+	$('theForm').submit();
+	
+	return true;
+}
+
+
+	
+</script>
+			
+
+
+	</body>
+</html>
