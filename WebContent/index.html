@@ -57,6 +57,7 @@
 	<script src="./assets/js/script.help2.js" type="text/javascript"></script>
 	<script src="./assets/js/script.runscript.js" type="text/javascript"></script>
 	<script src="./assets/js/script.upload.js" type="text/javascript"></script>
+	<script src="./assets/js/script.interactive-console.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -170,12 +171,22 @@
 										</span> Run script &amp; visualize
 									</div>
 								</div>
-
+									<div class="btn-group">
+										 <span
+											class="btn results-btn disabled"
+											id="btntoggleinteractiveconsole" title="Open interactive console"><i
+											class="icon-laptop"></i></span>
+									</div>
 							</div>
-
+						<!-- Interactive console -->
+						<div id="interactive-console" style="display:none">
+							<div id="interactive-output"></div>
+							<textarea rows="1" id="interactive-input"></textarea>
+						</div>
+						<!-- End interactive console -->
 						</div>
 						<!-- /CODE EDITOR -->
-
+						
 
 
 						<!-- TABS -->
