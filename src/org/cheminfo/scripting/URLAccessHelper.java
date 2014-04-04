@@ -1,4 +1,4 @@
-package org.cheminfo.script.utility;
+package org.cheminfo.scripting;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.cheminfo.function.scripting.SecureFileManager;
+import org.cheminfo.script.utility.URLFileManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

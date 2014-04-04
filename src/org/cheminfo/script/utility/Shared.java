@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.cheminfo.function.scripting.ScriptingInstance;
+import org.cheminfo.scripting.URLAccessHelper;
 
 
 /**
