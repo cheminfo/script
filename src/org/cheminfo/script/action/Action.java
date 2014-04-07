@@ -1,7 +1,5 @@
 package org.cheminfo.script.action;
 
-import java.io.File;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
