@@ -17,7 +17,7 @@ public class RunService extends RunScript {
 	    	}
 	    	initScript="var form="+form.toString()+";";
 	    	
-	    	String currentDir = "";
+	    	String currentDir = "/"+System.currentTimeMillis();
 	    	String resultBranch = "Master";
 	    	String viewBranch="Master";
 	    	String description = "";

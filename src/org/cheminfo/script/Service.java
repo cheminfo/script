@@ -1,5 +1,6 @@
 package org.cheminfo.script;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLClassLoader;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.cheminfo.function.scripting.ScriptingInstance;
 import org.cheminfo.script.action.Action;
 import org.cheminfo.script.action.ActionManager;
@@ -36,8 +38,22 @@ public class Service extends HttpServlet {
 		if (DEBUG) System.out.println("Key: "+key);
 		
 		String scriptFilename=TinyURL.retrieve(key);
-		String homeDir=scriptFilename.replaceAll("/[^/]+$", "");
+		String homeDir=scriptFilename.replaceAll("/[^/]+$", "/tmp/");
 		
+		// Erase old temporary data
+		long currentTime = System.currentTimeMillis();
+		long maxTime = 1000*60*60*6; // keep it for 6 hours
+		File tmpDir = new File(homeDir);
+		if(tmpDir.isDirectory()) {
+			File[] list = tmpDir.listFiles();
+			for(File file : list) {
+				String name = file.getName();
+				long fileTime = Long.parseLong(name);
+				if(currentTime-fileTime > maxTime)
+					FileUtils.deleteDirectory(file);
+			}
+		}
+
 		if (DEBUG) System.out.println("Script file name: "+scriptFilename);
 		
 		// Webservice should be accessible from anywhere
