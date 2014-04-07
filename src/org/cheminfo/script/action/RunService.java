@@ -1,23 +1,11 @@
 package org.cheminfo.script.action;
 
 
-import java.util.HashMap;
-
-import javax.servlet.ServletContext;
-
-import org.cheminfo.function.scripting.ScriptingInstance;
-import org.cheminfo.script.sse.SSEOutputs;
-import org.cheminfo.script.utility.FileTreatment;
 import org.cheminfo.script.utility.ServletUtilities;
-import org.cheminfo.script.utility.Shared;
-import org.cheminfo.script.utility.URLFileManager;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RunService extends RunScript {
 	
-	private static boolean DEBUG=false;
-
 	String script="";
 	
     public void execute() {

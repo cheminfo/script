@@ -33,13 +33,15 @@ public class Service extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Data data=new Data(request);
 		String key=request.getRequestURI().replaceAll("^.*Service/", "");
-
 		if (DEBUG) System.out.println("Key: "+key);
 		
 		String scriptFilename=TinyURL.retrieve(key);
 		String homeDir=scriptFilename.replaceAll("/[^/]+$", "");
 		
 		if (DEBUG) System.out.println("Script file name: "+scriptFilename);
+		
+		// Webservice should be accessible from anywhere
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		RunService service=new RunService();
 		service.initialize(data, response, this);
