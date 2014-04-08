@@ -93,7 +93,7 @@ public class RunScript extends Action {
 				// Erase old temporary data
 				long currentTime = System.currentTimeMillis();
 				long maxTime = 1000*60*60*6; // keep it for 6 hours
-				File tmpDir = new File(homeDir+currentDir+"/tmp");
+				File tmpDir = new File(homeDir+currentDir+"tmp/");
 				if(tmpDir.isDirectory()) {
 					File[] list = tmpDir.listFiles();
 					for(File file : list) {
@@ -116,7 +116,7 @@ public class RunScript extends Action {
 						"Global.basedir='"+homeDir+"';"+
 						"Global.currentDir='"+currentDir+"';"+
 						"Global.serverURL='"+this.data.getServerURL()+"';"+
-						"Global.tmpDir='tmp/"+currentTime+"';"+
+						"Global.tmpDir='tmp/"+currentTime+"/';"+
 						sse+
 						"function getReadFileURL(filename) { return URLAccessHelper.getReadFileURL(Global.basedir, Global.basedirkey, File.checkGlobal(filename), Global.baseURL)+'';};"+
 						"function getWriteFileURL(filename) { return URLAccessHelper.getWriteFileURL(Global.basedir, Global.basedirkey, File.checkGlobal(filename), Global.baseURL)+'';};"+
