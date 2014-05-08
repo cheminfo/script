@@ -99,18 +99,12 @@
 					
 					var startLink = addresses().base + visualizerVersionURL;
 					var endLink = "?views="+views+"&results="+results+"&viewBranch="+viewBranch+"&resultBranch="+resultBranch;
+					
+					if(!head) head = $visualizerRelease.indexOf("2014")===0;
 
 					window.partialURL = endLink;
 					$visualizerFullLink = startLink+endLink+((!head) ? ("&header=" + encodeURIComponent(addresses().base) + "headers/default.json"+"&config=" + encodeURIComponent(addresses().base) + "configs/default.json") : "&config="+encodeURIComponent(addresses().base+"configs/head.json"));
 
-					/*$visualizerFullLink = addresses().base + visualizerVersionURL +
-						"?views="+views+
-						"&results="+results+
-						"&header=" + encodeURIComponent(addresses().base) + "headers/default.json"+
-						"&config=" + encodeURIComponent(addresses().base) + "configs/default.json"+
-						"&viewBranch="+viewBranch+
-						"&resultBranch="+resultBranch+
-						"" ;*/
 					if(openWhenOver){
 						openVisualizer();
 					}
