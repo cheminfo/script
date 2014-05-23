@@ -82,9 +82,9 @@ public class Data {
         }
      }
 
-    public Data() {
-    	
-    }
+//    public Data() {
+//    	
+//    }
     
     public boolean isAdmin() {
     	return request.isUserInRole("webautomator-admin");

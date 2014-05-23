@@ -1,5 +1,7 @@
 package org.cheminfo.script.action;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,7 +37,7 @@ public class Action {
 		
 	}
 	
-	protected String getHomeDir() {
+	public String getHomeDir() {
 		if (data.request.getSession().getAttribute("homeDir")==null) return null;
 		String homeDir=data.request.getSession().getAttribute("homeDir").toString();
 		if (! homeDir.endsWith("/")) {

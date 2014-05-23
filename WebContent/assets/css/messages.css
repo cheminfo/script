@@ -1,0 +1,20 @@
+.messages {
+    list-style: none;
+}
+.messages .info {
+    background: url('info.gif') no-repeat left center;
+    color:blue;
+}
+.messages .error {
+    background: url('error.gif') no-repeat left center;
+    color: red;
+}
+
+.messages .warn {
+    background: url('warn.gif') no-repeat left center;
+    color: orange;
+}
+
+.messages td {
+    padding-left: 15px;
+}
