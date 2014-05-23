@@ -94,7 +94,6 @@
 					viewBranch = "Master" ;
 					resultBranch = branchName ;
 
-
 					var endLink = "?views="+views+"&results="+results+"&viewBranch="+viewBranch+"&resultBranch="+resultBranch;
 					window.partialURL = endLink;
 
