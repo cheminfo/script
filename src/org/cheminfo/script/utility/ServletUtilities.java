@@ -32,7 +32,7 @@ public class ServletUtilities {
 			return "chemical/x-mdl-molfile";
 		} else if (extension.endsWith("zip")) {
 			return "application/zip";
-		} else if (extension.endsWith("json")) {
+		} else if (extension.endsWith("json")||extension.endsWith("array")) {
 			return "application/json";
 		} else {
 			return "text/text";
