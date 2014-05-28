@@ -236,10 +236,9 @@ public class RunScript extends Action {
 						}
 					}
 				}
-
-				ServletUtilities.returnResponse(response, toReturn.toString(),
-						"application/json");
 			}
+			ServletUtilities.returnResponse(response, toReturn.toString(),
+					"application/json");
 		}
 	}
     
