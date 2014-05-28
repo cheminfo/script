@@ -1,10 +1,13 @@
 package org.cheminfo.script.action;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FileUtils;
 import org.cheminfo.function.scripting.ScriptingInstance;
 import org.cheminfo.script.sse.SSECallBack;
 import org.cheminfo.script.sse.SSEOutputs;
