@@ -67,7 +67,7 @@
 /* RUN SCRIPT */
 
 	$(function(){
-		
+	
 		var $versionSelector = $('<select>',{'data-style':"btn-primary"}).addClass('selectpicker') ;
 
 		function generateVisualizerLink(openWhenOver){
@@ -93,13 +93,17 @@
 
 					viewBranch = "Master" ;
 					resultBranch = branchName ;
-
+				
+					var head = $visualizerRelease==="HEAD";
+					visualizerVersionURL = "visualizer/release/"+ $visualizerRelease +(head ? "/src" : "")+"/index.html" ;
+					
+					var startLink = addresses().base + visualizerVersionURL;
 					var endLink = "?views="+views+"&results="+results+"&viewBranch="+viewBranch+"&resultBranch="+resultBranch;
+					
+					if(!head) head = ($visualizerRelease==='current'||$visualizerRelease.indexOf("2014")===0);
+
 					window.partialURL = endLink;
-
-					var parts = addresses().getVisualizerParts();
-
-					$visualizerFullLink = parts.prefix+endLink+parts.suffix;
+					$visualizerFullLink = startLink+endLink+((!head) ? ("&header=" + encodeURIComponent(addresses().base) + "headers/default.json"+"&config=" + encodeURIComponent(addresses().base) + "configs/default.json") : "&config="+encodeURIComponent(addresses().base+"configs/head.json"));
 
 					if(openWhenOver){
 						openVisualizer();
@@ -189,10 +193,11 @@
 		/* RUNNING */
 		
 		function runScript(options) {
+
 			// Check if already running (disabled button)
 			if($isRunning)
 				return false ;
-			
+
 			$scriptName = $getScriptName() ;
 			if(! $regexScriptName.test($scriptName)){
 				$alert("Invalid file name.");
@@ -207,7 +212,7 @@
 				context: options,
 				data: {
 					script:($getCMContent()),
-					currentDir:$currentProjectNode.getKeyPath(),
+					currentDir:$currentProjectNode.getKeyPath()+"/",
 					resultBranch: $('#script-name').val(),
 					SSEToken: SSEToken,
 					/*
@@ -219,25 +224,15 @@
 					*/
 					dataType: "json"
 				},
-				beforeSend : function (){
-					
-				},
 				complete:function(){
 					endRun();
-					document.getElementById("threadForm:refreshThreadButton").click();
 				},
 				error : function(t){
-					$alert("error");
 					$writeConsole("Error: <b>server side</b>");
 				},
 				success: function(data) {
-					
-					if(data.error){
-						$writeConsole("Error: <b>"+data.error+"</b>");
-						$alert(data.error);
-						return;
-					}
-					else if(! data._logs){
+
+					if(! data._logs){
 						$alert("<b>Logs not found</b>");
 						return;
 					}
@@ -395,7 +390,6 @@
 			$.ajax({
 				url: addresses().visualizerReleases,
 				data: {},
-				
 				success: function(d){
 
 					var allVisualizerVersions=eval("("+d+")").files;
