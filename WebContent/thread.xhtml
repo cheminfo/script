@@ -134,7 +134,7 @@
 						<p:outputLabel id="result#{index}"/>
 						<script>
 							$(function(){
-							$('[id="threadForm:scriptTable:#{STindex}:userTable:#{UTindex}:result"]').html(generateURL(encodeURIComponent("#{script.dataURL}"), encodeURIComponent("#{script.viewURL}")));
+							$('[id="threadForm:scriptTable:#{STindex}:userTable:#{UTindex}:result"]').html(generateURL("#{script.dataURL}", "#{script.viewURL}"));
 							});
 						</script>
 					</p:column>

@@ -1,13 +1,10 @@
 package org.cheminfo.script.action;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.io.FileUtils;
 import org.cheminfo.function.scripting.ScriptingInstance;
 import org.cheminfo.script.sse.SSECallBack;
 import org.cheminfo.script.sse.SSEOutputs;
@@ -22,7 +19,6 @@ import org.json.JSONObject;
 public class RunScript extends Action {
 
 	private static boolean DEBUG = false;
-    private boolean enableSSE = true;
 
 	final static int FULL_RESULT = 0;
 	final static int RESULT_LINK = 1;
@@ -90,7 +86,7 @@ public class RunScript extends Action {
 
 			String sse = "";
 			ServletContext context = this.httpServlet.getServletContext();
-			if (this.enableSSE && context.getAttribute("SSE") != null) {
+			if (context.getAttribute("SSE") != null) {
 				// sse="Global.SSEToken='"+data.getParameterAsString("SSEToken")+"';"+"console.logCallback=function(value,label){SSEMANAGER.sendLog(value, label, Global.SSEToken);};";
 				SSEOutputs logOutputs = ((HashMap<String, SSEOutputs>) context
 						.getAttribute("SSE")).get(homeDir);
@@ -115,25 +111,6 @@ public class RunScript extends Action {
 					System.out.println("RunScript: homeDir: " + homeDir);
 
 				interpreter.setSafePath(homeDir);
-                
-                // Erase old temporary data
- 				long currentTime = System.currentTimeMillis();
- 				long maxTime = 1000*60*60*6; // keep it for 6 hours
- 				File tmpDir = new File(homeDir+currentDir+"tmp/");
- 				if(tmpDir.isDirectory()) {
- 					File[] list = tmpDir.listFiles();
- 					for(File file : list) {
- 						String name = file.getName();
- 						long fileTime = Long.parseLong(name);
- 						if(currentTime-fileTime > maxTime) {
- 							try {
- 								FileUtils.deleteDirectory(file);
- 							} catch (IOException e) {
- 								e.printStackTrace();
- 							}
- 						}
- 					}
- 				}
 
 				script = ""
 						+
@@ -186,11 +163,11 @@ public class RunScript extends Action {
 					if (viewFilename != null) {
 						toReturn.put("_viewFilename",
 								viewFilename.replaceFirst(homeDir, ""));
-						String viewUrl=
+						String vueURL=
 								 URLFileManager.getFileReadURL(viewFilename,
 										 data.request.getRequestURL().toString());
-						 toReturn.put("_viewUrl",viewUrl);
-						 scriptInfo.setViewURL(viewUrl);
+						 toReturn.put("_viewUrl",vueURL);
+						 scriptInfo.setViewURL(vueURL);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -236,14 +213,11 @@ public class RunScript extends Action {
 						}
 					}
 				}
+
+				ServletUtilities.returnResponse(response, toReturn.toString(),
+						"application/json");
 			}
-			ServletUtilities.returnResponse(response, toReturn.toString(),
-					"application/json");
 		}
 	}
-    
-    public void disableSSE() {
-        this.enableSSE = false;
-    }
 
 }

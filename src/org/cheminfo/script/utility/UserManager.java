@@ -76,7 +76,7 @@ public class UserManager {
 		} else {
 			timeout=1000*60*5;
 		}
-		return timeout;
-		//return 30000;
+		//return timeout;
+		return 30000;
 	}
 }

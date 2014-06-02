@@ -17,7 +17,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.cheminfo.function.scripting.ScriptingInstance;
-import org.cheminfo.scripting.URLAccessHelper;
 
 
 /**
@@ -125,7 +124,7 @@ public class Shared {
 		} else {
 			ScriptingInstance interpreter=new ScriptingInstance(Shared.getProperty("PLUGINS_FOLDER",null),(URLClassLoader)getInstance().getClass().getClassLoader());				
 			// we will add in the context our method for file access
-			interpreter.addObjectToScope("URLAccessHelper",new URLAccessHelper());
+			interpreter.getJsEngine().put("URLAccessHelper",new URLAccessHelper());
 			
 			if (session!=null) {
 				session.setAttribute("scripting", interpreter);

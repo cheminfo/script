@@ -29,7 +29,7 @@ public class RunService extends RunScript {
 	    	}
 	    	initScript="var form="+form.toString()+";";
 	    	
-	    	String currentDir = "/";
+	    	String currentDir = "";
 	    	String resultBranch = "Master";
 	    	String viewBranch="Master";
 	    	String description = "";

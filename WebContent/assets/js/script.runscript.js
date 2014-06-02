@@ -207,7 +207,7 @@
 				context: options,
 				data: {
 					script:($getCMContent()),
-					currentDir:$currentProjectNode.getKeyPath()+"/",
+					currentDir:$currentProjectNode.getKeyPath(),
 					resultBranch: $('#script-name').val(),
 					SSEToken: SSEToken,
 					/*
@@ -218,6 +218,9 @@
 					description: $('#description').val(),
 					*/
 					dataType: "json"
+				},
+				beforeSend : function (){
+					
 				},
 				complete:function(){
 					endRun();

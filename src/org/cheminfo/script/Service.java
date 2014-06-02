@@ -37,15 +37,11 @@ public class Service extends HttpServlet {
 		if (DEBUG) System.out.println("Key: "+key);
 		
 		String scriptFilename=TinyURL.retrieve(key);
-		String homeDir=scriptFilename.replaceAll("/[^/]+$", "/");
+		String homeDir=scriptFilename.replaceAll("/[^/]+$", "");
 		
 		if (DEBUG) System.out.println("Script file name: "+scriptFilename);
-        
-        // Webservice should be accessible from anywhere
- 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		RunService service=new RunService();
-        service.disableSSE();
 		service.initialize(data, response, this);
 		service.setHomeDir(homeDir);
 		service.setScript(FileTreatment.readFile(scriptFilename));
