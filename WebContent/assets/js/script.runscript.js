@@ -180,7 +180,7 @@
 			var json = JSON.parse("" + e.data);
 			if(!showAllLogs && (json.SSEToken!=SSEToken))
 				return;
-			json.description = JSON.parse(json.description);
+
 			if(json.description && json.label)
 				showLog(json);
 		}
@@ -297,11 +297,18 @@
 
 		function showLog(log){
 			
+			function stringifyObj(obj) {
+				if(typeof obj === "object")
+					return JSON.stringify(obj);
+				else
+					return obj;
+			}
+			
 			if(log.description instanceof Array) {
 				var desc = log.description;
-				var content = JSON.stringify(desc.shift());
+				var content = stringifyObj(desc.shift());
 				for(var i = 0; i < desc.length; i++) {
-					content += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+JSON.stringify(desc[i]);
+					content += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+stringifyObj(desc[i]);
 				}
 				$content = content;
 			} else {
