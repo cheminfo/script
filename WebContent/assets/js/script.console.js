@@ -20,12 +20,15 @@
 
 		var $consoleLines = [] ;
 		var $consoleBlock = $('#console') ;
-	
+		
 		$writeConsole = function(text){
+			function formatTwoDigits(n) {
+				return n > 9 ? "" + n: "0" + n;
+			}
 			$newLine = $('<div>').addClass("console-line").append(text) ;
 			d = new Date();
 			$hour = $('<span>').addClass("console-time") ;
-			$hour.append(d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()) ;
+			$hour.append(formatTwoDigits(d.getHours()) + ":" + formatTwoDigits(d.getMinutes()) + ":" + formatTwoDigits(d.getSeconds())) ;
 			$newLine.prepend($hour) ;
             $consoleBlock.append($newLine);
 			$newLine.hide(0,function(){$newLine.fadeIn(1,function(){

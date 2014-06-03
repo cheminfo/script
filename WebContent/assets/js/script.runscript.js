@@ -180,6 +180,7 @@
 			var json = JSON.parse("" + e.data);
 			if(!showAllLogs && (json.SSEToken!=SSEToken))
 				return;
+			json.description = JSON.parse(json.description);
 			if(json.description && json.label)
 				showLog(json);
 		}
@@ -295,8 +296,17 @@
 		}
 
 		function showLog(log){
-
-			$content = log.description ;
+			
+			if(log.description instanceof Array) {
+				var desc = log.description;
+				var content = JSON.stringify(desc.shift());
+				for(var i = 0; i < desc.length; i++) {
+					content += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+JSON.stringify(desc[i]);
+				}
+				$content = content;
+			} else {
+				$content = log.description;
+			}
 
 			patt = new RegExp("at (line number ([0-9]+))$");
 			cap = 1 ;
