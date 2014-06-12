@@ -242,18 +242,37 @@
 			}
 		}
 
-		function displayTabScripting(){
-			displayTabFromMenu("scripting");
-		}
 
-		function displayTabHistory(){
-			loadHistory();
-			displayTabFromMenu("history");
-		}
+	function reLoadThreadTab() {
+		document.getElementById("threadForm:refreshThreadButton").click();
+	}
 
-		$('#menu-link-scripting').on("click",function(){displayTabScripting();});
-		$('#menu-link-history').on("click",function(){displayTabHistory();});
-		
+	function displayTabScripting() {
 		displayTabFromMenu("scripting");
-		
+	}
+
+	function displayTabHistory() {
+		loadHistory();
+		displayTabFromMenu("history");
+	}
+
+	function displayTabThread() {
+		displayTabFromMenu("thread");
+		reLoadThreadTab();
+	}
+
+	$('#menu-link-scripting').on("click", function() {
+		displayTabScripting();
 	});
+	$('#menu-link-history').on("click", function() {
+		displayTabHistory();
+	});
+	$('#menu-link-thread').on("click", function() {
+		displayTabThread();
+	});
+
+	displayTabFromMenu("scripting");
+	//THreadManagement MaybeMove or change name of the File
+	$("#threadDIV").load("thread.xhtml");
+
+});

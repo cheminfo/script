@@ -15,6 +15,7 @@ import org.cheminfo.script.action.Action;
 import org.cheminfo.script.action.ActionManager;
 import org.cheminfo.script.utility.Data;
 import org.cheminfo.script.utility.Shared;
+import org.cheminfo.script.utility.UserManager;
 
 
 /**

@@ -12,6 +12,7 @@ import org.cheminfo.function.scripting.ScriptingInstance;
 import org.cheminfo.script.sse.SSECallBack;
 import org.cheminfo.script.sse.SSEOutputs;
 import org.cheminfo.script.utility.FileTreatment;
+import org.cheminfo.script.utility.ScriptInfo;
 import org.cheminfo.script.utility.ServletUtilities;
 import org.cheminfo.script.utility.Shared;
 import org.cheminfo.script.utility.URLFileManager;
