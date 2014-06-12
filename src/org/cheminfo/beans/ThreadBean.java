@@ -99,7 +99,7 @@ public class ThreadBean implements Serializable {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Info","trying to stop Thread"); 
         FacesContext.getCurrentInstance().addMessage(null, msg);
         if(thread.getState().equals(Thread.State.RUNNABLE)){
-			System.out.println("ThreadBean: "+thread.getName());
+			//System.out.println("ThreadBean: "+thread.getName());
 			thread.stop();//change tu interrupt and make eval interreptuble by adding boolean to chekc in each loop and function
 			//JOptionPane.showMessageDialog(null, "To much time to execute aborted", "Aborted", JOptionPane.ERROR_MESSAGE);
 		}
