@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 public class RunService extends RunScript {
 	
+	private static boolean DEBUG=false;
+
 	String script="";
 	
     public void execute() {

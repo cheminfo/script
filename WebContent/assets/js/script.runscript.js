@@ -223,13 +223,19 @@
 				},
 				complete:function(){
 					endRun();
+					document.getElementById("threadForm:refreshThreadButton").click();
 				},
 				error : function(t){
 					$writeConsole("Error: <b>server side</b>");
 				},
 				success: function(data) {
-
-					if(! data._logs){
+					
+					if(data.error){
+						$writeConsole("Error: <b>"+data.error+"</b>");
+						$alert(data.error);
+						return;
+					}
+					else if(! data._logs){
 						$alert("<b>Logs not found</b>");
 						return;
 					}

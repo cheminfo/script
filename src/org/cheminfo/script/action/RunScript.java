@@ -149,14 +149,24 @@ public class RunScript extends Action {
 			if (getResult!=RESULT_ONLY) {
 			
 				try {
-					if (DEBUG) System.out.println("RunScript: currentdir: "+currentDir);
-					
-					String viewFilename=FileTreatment.getLastFilename(homeDir, currentDir, ".views", viewBranch, "", "json");
-					FileTreatment.createFolder(viewFilename.replaceAll("[^/]*$", ""));
-					if (viewFilename!=null) {
-						toReturn.put("_viewFilename",viewFilename.replaceFirst(homeDir, ""));
-				//		toReturn.put("_viewUrl", URLFileManager.getFileReadURL(viewFilename, data.request.getRequestURL().toString()));		
-					}					
+					if (DEBUG)
+						System.out.println("RunScript: currentdir: "
+								+ currentDir);
+
+					String viewFilename = FileTreatment.getLastFilename(
+							homeDir, currentDir, ".views", viewBranch, "",
+							"json");
+					FileTreatment.createFolder(viewFilename.replaceAll(
+							"[^/]*$", ""));
+					if (viewFilename != null) {
+						toReturn.put("_viewFilename",
+								viewFilename.replaceFirst(homeDir, ""));
+						String vueURL=
+								 URLFileManager.getFileReadURL(viewFilename,
+										 data.request.getRequestURL().toString());
+						 toReturn.put("_viewUrl",vueURL);
+						 scriptInfo.setViewURL(vueURL);
+					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace(System.out);
@@ -168,7 +178,11 @@ public class RunScript extends Action {
 					if (dataFilename!=null) {
 						toReturn.put("_dataFilename",dataFilename.replaceFirst(homeDir, ""));
 						// required to see the full data as json
-						toReturn.put("_dataUrl", URLFileManager.getFileReadURL(dataFilename, data.request.getRequestURL().toString()));		
+						String dataURL= URLFileManager.getFileReadURL(
+								dataFilename, data.request.getRequestURL()
+								.toString());
+						toReturn.put("_dataUrl",dataURL);
+						scriptInfo.setDataURL(dataURL);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

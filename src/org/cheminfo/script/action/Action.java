@@ -35,7 +35,7 @@ public class Action {
 		
 	}
 	
-	protected String getHomeDir() {
+	public String getHomeDir() {
 		if (data.request.getSession().getAttribute("homeDir")==null) return null;
 		String homeDir=data.request.getSession().getAttribute("homeDir").toString();
 		if (! homeDir.endsWith("/")) {
