@@ -2,6 +2,7 @@ package org.cheminfo.script;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.cheminfo.script.action.Action;
 import org.cheminfo.script.action.ActionManager;
 import org.cheminfo.script.utility.Data;
@@ -46,7 +48,7 @@ public class Run extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(final HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//System.out.println("Saved to: "+pathToSavedFiles+"/");
 		Data data=new Data(request);
 		String action = data.getAction();
@@ -56,7 +58,7 @@ public class Run extends HttpServlet {
 		}
 
 		// now we create the action
-		Action currentAction=ActionManager.getInstance(action);
+		final Action currentAction=ActionManager.getInstance(action);
 		if (currentAction!=null) {
 			currentAction.initialize(data, response, this);
 			currentAction.execute();
@@ -80,6 +82,16 @@ public class Run extends HttpServlet {
 			out.println(toReturn);
 			out.close();
 		} catch (IOException e) {throw new RuntimeException("Exception: "+e.toString());}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void addThreadPoolIfNotExist(HttpServletRequest request,
+			String path) {
+		HashMap<String, ThreadPoolExecutor> executorsMap = (HashMap<String, ThreadPoolExecutor>) request
+				.getServletContext().getAttribute("executorsMap");
+		if (executorsMap.get(path) == null) {
+			executorsMap.put(path, UserManager.getNewPool(path));
+		}
 	}
 
 	

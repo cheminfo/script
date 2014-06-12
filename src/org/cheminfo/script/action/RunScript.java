@@ -27,6 +27,15 @@ public class RunScript extends Action {
 	final static int RESULT_LINK=1;
 	final static int RESULT_ONLY=2;
 	
+	private ScriptInfo scriptInfo;
+
+	public ScriptInfo getScriptInfo() {
+		return scriptInfo;
+	}
+
+	public void setScriptInfo(ScriptInfo scriptInfo) {
+		this.scriptInfo = scriptInfo;
+	}
 	
     public void execute() {
 		if (homeDir==null) {
