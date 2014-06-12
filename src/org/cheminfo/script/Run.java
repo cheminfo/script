@@ -53,29 +53,26 @@ public class Run extends HttpServlet {
 		super.init(config);
 
 		Shared.setServletContext(config.getServletContext());
-
+		
 		// In order to create the help we need to have a scripting instance
 		Shared.updateHelp(Shared.getScriptingInstance(null, true));
 	}
-
+    
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("unchecked")
-	protected void doPost(final HttpServletRequest request,
-		final HttpServletResponse response) throws ServletException, IOException {
-		// System.out.println("Saved to: "+pathToSavedFiles+"/");
-		Data data = new Data(request);
+	protected void doPost(final HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//System.out.println("Saved to: "+pathToSavedFiles+"/");
+		Data data=new Data(request);
 		String action = data.getAction();
-
-		if (action == null) {
-			action = "RunScript";
+			
+		if (action==null) {
+			action="RunScript";
 		}
 
 		// now we create the action
-		final Action currentAction = ActionManager.getInstance(action);
-		if (currentAction != null) {
+		final Action currentAction=ActionManager.getInstance(action);
+		if (currentAction!=null) {
 			currentAction.initialize(data, response, this);
 
 			if (action.equals("RunScript") || action.equals("RunService")) {
@@ -132,29 +129,25 @@ public class Run extends HttpServlet {
 			}
 
 		} else {
-			returnResponse("The action " + action + " is not defined", response);
+			returnResponse("The action "+action+" is not defined", response);
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		this.doPost(request, response);
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.doPost(request,  response);
 	}
 
-	public void returnResponse(String toReturn, HttpServletResponse response) {
+	public void returnResponse (String toReturn, HttpServletResponse response) {
 		try {
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
 			out.println(toReturn);
 			out.close();
-		} catch (IOException e) {
-			throw new RuntimeException("Exception: " + e.toString());
-		}
+		} catch (IOException e) {throw new RuntimeException("Exception: "+e.toString());}
 	}
 	
 	@SuppressWarnings("unchecked")

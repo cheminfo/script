@@ -67,7 +67,7 @@
 /* RUN SCRIPT */
 
 	$(function(){
-		
+	
 		var $versionSelector = $('<select>',{'data-style':"btn-primary"}).addClass('selectpicker') ;
 
 		function generateVisualizerLink(openWhenOver){
@@ -95,10 +95,10 @@
 					resultBranch = branchName ;
 
 					var endLink = "?views="+views+"&results="+results+"&viewBranch="+viewBranch+"&resultBranch="+resultBranch;
+
 					window.partialURL = endLink;
-
+					
 					var parts = addresses().getVisualizerParts();
-
 					$visualizerFullLink = parts.prefix+endLink+parts.suffix;
 
 					if(openWhenOver){
@@ -180,6 +180,7 @@
 			var json = JSON.parse("" + e.data);
 			if(!showAllLogs && (json.SSEToken!=SSEToken))
 				return;
+
 			if(json.description && json.label)
 				showLog(json);
 		}
@@ -189,10 +190,11 @@
 		/* RUNNING */
 		
 		function runScript(options) {
+
 			// Check if already running (disabled button)
 			if($isRunning)
 				return false ;
-			
+
 			$scriptName = $getScriptName() ;
 			if(! $regexScriptName.test($scriptName)){
 				$alert("Invalid file name.");
@@ -207,7 +209,7 @@
 				context: options,
 				data: {
 					script:($getCMContent()),
-					currentDir:$currentProjectNode.getKeyPath(),
+					currentDir:$currentProjectNode.getKeyPath()+"/",
 					resultBranch: $('#script-name').val(),
 					SSEToken: SSEToken,
 					/*
@@ -219,15 +221,11 @@
 					*/
 					dataType: "json"
 				},
-				beforeSend : function (){
-					
-				},
 				complete:function(){
 					endRun();
 					document.getElementById("threadForm:refreshThreadButton").click();
 				},
 				error : function(t){
-					$alert("error");
 					$writeConsole("Error: <b>server side</b>");
 				},
 				success: function(data) {
@@ -304,8 +302,24 @@
 		}
 
 		function showLog(log){
-
-			$content = log.description ;
+			
+			function stringifyObj(obj) {
+				if(typeof obj === "object")
+					return JSON.stringify(obj);
+				else
+					return obj;
+			}
+			
+			if(log.description instanceof Array) {
+				var desc = log.description;
+				var content = stringifyObj(desc.shift());
+				for(var i = 0; i < desc.length; i++) {
+					content += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+stringifyObj(desc[i]);
+				}
+				$content = content;
+			} else {
+				$content = log.description;
+			}
 
 			patt = new RegExp("at (line number ([0-9]+))$");
 			cap = 1 ;
@@ -395,7 +409,6 @@
 			$.ajax({
 				url: addresses().visualizerReleases,
 				data: {},
-				
 				success: function(d){
 
 					var allVisualizerVersions=eval("("+d+")").files;

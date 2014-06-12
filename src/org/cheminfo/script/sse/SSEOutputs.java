@@ -3,6 +3,8 @@ package org.cheminfo.script.sse;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 public class SSEOutputs extends ArrayList<OutputStream> {
 	
 	/**
@@ -25,8 +27,8 @@ public class SSEOutputs extends ArrayList<OutputStream> {
 		if(toDelete != null) this.removeAll(toDelete);
 	}
 
-	public void sendLog(String value, String label, String SSEToken) {
-		sendEvent("logEvent", "{\"description\":\""+value.replace("\"", "\\\"").replaceAll("[\r\n]", "<br>")+"\",\"label\":\""+label+"\",\"SSEToken\":\""+SSEToken+"\"}");
+	public void sendLog(JSONObject log) {
+		sendEvent("logEvent", log.toString().replaceAll("\\\\[rn]", "<br>"));
 	}
 	
 	public void sendClear(String SSEToken) {

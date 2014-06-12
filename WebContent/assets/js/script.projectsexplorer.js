@@ -121,7 +121,8 @@ ADD SIDEBAR
 	
 /* RIGHT CLICK */
 	var $bindContextMenu = function(){} ;
-	$(function(){	
+	$(function(){
+	
 		$bindContextMenu = function(span) {
 			var node = $.ui.dynatree.getNode(span);
 			$items = {
@@ -171,12 +172,14 @@ ADD SIDEBAR
 		    });
 		};
 		$contextMenuRoot = function(){
+			
 			$items = {
 	        	"newfolder": {name: '<i class="icon-folder-close-alt"></i> Create folder in root'}
 	        } ;
 		    $.contextMenu({
 		        selector: ".dynatree-container", 
 		        callback: function(key, options) {
+		        	
 		        	node = $.ui.dynatree.getNode(options.$trigger);
 		            switch( key ) {
 					  case "newfolder":

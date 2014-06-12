@@ -6,7 +6,7 @@
 	addresses = function() {
 
 		var base = window.location.origin+"/" ;
-		
+
 		return {
 			historyPath: ".history",
 			base: base,
@@ -27,4 +27,5 @@
 				};
 			}
 		};
+		
 	};
