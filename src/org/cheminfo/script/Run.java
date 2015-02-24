@@ -99,9 +99,13 @@ public class Run extends HttpServlet {
 						scriptInfo.setTimeout(UserManager.getTimeout(path));
 						f.get(UserManager.getTimeout(path), TimeUnit.MILLISECONDS);
 						scriptInfo.setStatus("Terminated");
-					} catch (InterruptedException | ExecutionException e) {
+					} catch (InterruptedException e) {
 						scriptInfo.setStatus("Interrupted");
 						ServletUtilities.returnError(response, "Thread was interrupted");
+					} catch (ExecutionException e) {
+						scriptInfo.setStatus("Interrupted");
+						ServletUtilities.returnError(response, "Thread was interrupted: "+e.toString());	
+						e.printStackTrace(System.out);
 					} catch (TimeoutException e) {
 						if(currentThread.isAlive()){
 							scriptInfo.setStatus("Timed Out");

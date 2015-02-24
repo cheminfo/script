@@ -9,7 +9,8 @@
 	var $currentResults = null ;
 	var $saveScript = function(){} ;
 	var $setResultsFromFile = function(){} ;
-	var $visualizerRelease = "current" ;
+	var $visualizerRelease = "latest" ;
+	var $visualizerURL = "";
 	var $regexScriptName = new RegExp("^[a-zA-Z0-9_-]+$",""); // UNDERSCORE ?
 
 /* SCRIPT EDITION */
@@ -99,7 +100,7 @@
 					window.partialURL = endLink;
 					
 					var parts = addresses().getVisualizerParts();
-					$visualizerFullLink = parts.prefix+endLink+parts.suffix;
+					$visualizerFullLink = $visualizerURL+endLink+parts.suffix;
 
 					if(openWhenOver){
 						openVisualizer();
@@ -406,49 +407,45 @@
 		
 			//div.html("Version").on("click",function(){initScriptVersion();}) ;
 
-			$.ajax({
-				url: addresses().visualizerReleases,
-				data: {},
-				success: function(d){
-
-					var allVisualizerVersions=eval("("+d+")").files;
-
-
-					allVisualizerVersions.push({name: "HEAD", url:"http://www.cheminfo.org/visualizer/head/index.html", date:"HEAD"});
-
-					allVisualizerVersions.sort(function(a,b) {
-						if (a.name<b.name) return 1;
-						if (a.name>b.name) return -1;
-						return 0;
-					});
-
-					cookie = localStorage.getItem('visualizer-release');
-
-					$.each(allVisualizerVersions,function(a,b){
-                        title = "Release " + b.date ;
-                        newdate = b.date.replace(/-/g,"") ;
-                        if(b.name != newdate){
-                            title += " (" + b.name + ")" ;
-                        }
-
-                        param = {value: b.name} ;
-                        if(cookie && cookie == param.value){
-                            param.selected = "selected" ;
-                        }
-
-						$versionSelector.append($('<option>',param).html(title));
-					});
-
-
-                    $visualizerRelease = $versionSelector.val() ;
-
-					$versionSelector.change(function(){
-						$visualizerRelease = $(this).val() ;
-                        localStorage.setItem('visualizer-release', $visualizerRelease);
-						generateVisualizerLink();
-					});
-				}
-			});
+			$.getJSON(
+					addresses().visualizerReleases,
+					function(allVisualizerVersions) {
+						allVisualizerVersions.sort(function(a,b) {
+							if (a.name<b.name) return 1;
+							if (a.name>b.name) return -1;
+							return 0;
+						});
+	
+						cookie = localStorage.getItem('visualizer-release');
+	
+						$.each(allVisualizerVersions,function(a,b){
+	                        title = "Release " + b.name ;
+	
+	                        param = {
+	                        		value: b.name,
+	                        };
+	                        param["data-url"]=b.url;
+	                        if(cookie && cookie == param.value){
+	                            param.selected = "selected" ;
+	                        }
+	
+							$versionSelector.append($('<option>',param).html(title));
+						});
+	
+	
+	                    $visualizerRelease = $versionSelector.val() ;
+	
+						$versionSelector.change(function(){
+							$visualizerRelease = $(this).val() ;
+							$visualizerURL = $(this).find(":selected").attr("data-url");
+	                        localStorage.setItem('visualizer-release', $visualizerRelease);
+							generateVisualizerLink();
+						});
+						
+						$versionSelector.change();
+						
+					}
+				);
 		}
 
 		initScriptVersion() ;
